@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "746487045438",
+    "project_id": "apalabrados-e9132",
+    "storage_bucket": "apalabrados-e9132.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746487045438:android:5a8d1a784437fad450a06f",
+        "android_client_info": {
+          "package_name": "com.example.apalabrados"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746487045438-gqln8i4ue75k0i1v9cka5pg8ip4aabuv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAuSlHVp-T4TxHu1mfpH2UQFbq59Alr-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746487045438-gqln8i4ue75k0i1v9cka5pg8ip4aabuv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
