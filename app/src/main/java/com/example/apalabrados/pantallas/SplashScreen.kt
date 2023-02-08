@@ -19,11 +19,11 @@ import com.example.apalabrados.R
 import com.example.apalabrados.ui.theme.AzulFondo
 
 @Composable
-fun SplashScreen(navController: NavController, ViewModel: ViewModel){
+fun SplashScreen(navController: NavController){
     LaunchedEffect(key1 = true){
-        delay(3000)
+        //delay(3000)
         navController.popBackStack()
-        navController.navigate(PantallasApp.Inicio.route)
+        navController.navigate(PantallasApp.AniadirPreguntas.route)
     }
 
     Splash()
@@ -38,7 +38,7 @@ fun Splash(){
         verticalArrangement = Arrangement.Center
             ){
 
-        Image(painter = painterResource(id =R.drawable.preguntadoss ) , contentDescription = null, modifier = Modifier.size(400.dp))
+        Image(painter = painterResource(id =R.drawable.preguntadoss ) , contentDescription = null, modifier = Modifier.size(500.dp))
     }
 }
 
