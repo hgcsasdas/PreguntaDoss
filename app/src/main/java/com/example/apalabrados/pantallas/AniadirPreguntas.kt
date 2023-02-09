@@ -6,13 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -59,20 +56,16 @@ fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel){
 fun aniadirPreguntasContent(ViewModel:ViewModel){
     val db = FirebaseFirestore.getInstance()
 
-    var nombre_coleccion = "preguntas"
-
     val campo by ViewModel.campo.observeAsState(initial = "")
+    val respuesta by ViewModel.respuesta.observeAsState(initial = "")
+
+
     val pregunta by ViewModel.pregunta.observeAsState(initial = "")
     val respuesta1 by ViewModel.respuesta1.observeAsState(initial = "")
     val respuesta2 by ViewModel.respuesta2.observeAsState(initial = "")
     val respuesta3 by ViewModel.respuesta3.observeAsState(initial = "")
-    val correcta by ViewModel.correcta.observeAsState(initial = "")
-
-    //var genero_dragon = remember { mutableStateOf("") }
 
     val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
-    val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
-
 
 
     Column(
@@ -86,28 +79,13 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
-            text = "Campo",
+            text = "Formulario añadir preguntas",
             fontWeight = FontWeight.ExtraBold
         )
 
         Spacer(modifier = Modifier.size(20.dp))
 
-        OutlinedTextField(
-            value = campo ,
-            onValueChange ={
-                ViewModel.onCompletedFields(
-                    campo = it,
-                    pregunta = pregunta,
-                    respuesta1 = respuesta1,
-                    respuesta2 = respuesta2,
-                    respuesta3 = respuesta3,
-                    correcta = correcta
-                )
-            },
-            label = { Text("Campo") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-        )
+        SeleccionPregunta(ViewModel)
 
         Spacer(modifier = Modifier.size(5.dp))
 
@@ -115,12 +93,10 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             value = pregunta,
             onValueChange ={
                 ViewModel.onCompletedFields(
-                    campo = campo,
                     pregunta = it,
                     respuesta1 = respuesta1,
                     respuesta2 = respuesta2,
                     respuesta3 = respuesta3,
-                    correcta = correcta
                 )
             },
             label = { Text("Pregunta") },
@@ -134,12 +110,10 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             value = respuesta1 ,
             onValueChange ={
                 ViewModel.onCompletedFields(
-                    campo = campo,
                     pregunta = pregunta,
                     respuesta1 = it,
                     respuesta2 = respuesta2,
                     respuesta3 = respuesta3,
-                    correcta = correcta
                 )
             },
             label = { Text("Respuesta 1") },
@@ -154,12 +128,10 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             value = respuesta2 ,
             onValueChange ={
                 ViewModel.onCompletedFields(
-                    campo = campo,
                     pregunta = pregunta,
                     respuesta1 = respuesta1,
                     respuesta2 = it,
                     respuesta3 = respuesta3,
-                    correcta = correcta
                 )
             },
             label = { Text("Respuesta 2") },
@@ -173,12 +145,10 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             value = respuesta3 ,
             onValueChange ={
                 ViewModel.onCompletedFields(
-                    campo = campo,
                     pregunta = pregunta,
                     respuesta1 = respuesta1,
                     respuesta2 = respuesta2,
                     respuesta3 = it,
-                    correcta = correcta
                 )
             },
             label = { Text("Respuesta 3") },
@@ -189,22 +159,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         Spacer(modifier = Modifier.size(5.dp))
         val context = LocalContext.current
 
-        OutlinedTextField(
-            value = correcta,
-            onValueChange ={
-                ViewModel.onCompletedFields(
-                    campo = campo,
-                    pregunta = pregunta,
-                    respuesta1 = respuesta1,
-                    respuesta2 = respuesta2,
-                    respuesta3 = respuesta3,
-                    correcta = it
-                )
-            },
-            label = { Text("Respuesta correcta") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-        )
+        SeleccionRespuesta(ViewModel())
 
         Spacer(modifier = Modifier.padding(16.dp))
 
@@ -214,11 +169,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(onClick = {
-                if (campo.isEmpty()) {
-                    Toast
-                        .makeText(context, "Nombre en blanco", Toast.LENGTH_LONG)
-                        .show()
-                } else if (pregunta.isEmpty()) {
+                if (pregunta.isEmpty()) {
                     Toast
                         .makeText(context, "Raza en blanco", Toast.LENGTH_LONG)
                         .show()
@@ -243,7 +194,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
                             "respuesta1" to respuesta1,
                             "respuesta2" to respuesta2,
                             "respuesta3" to respuesta3,
-                            "correcta" to correcta
+                            "correcta" to respuesta
                         ))
                         .addOnSuccessListener {
                             ViewModel.limpiarCampos()
@@ -257,6 +208,8 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
                                 .show()
                         }
                 }
+                println(ViewModel.campo.value)
+                println("alijdlisajdliajds")
             }) {
                 Text(
                     text = "Añadir Pregunta",
@@ -265,6 +218,115 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                 )
+            }
+        }
+    }
+}
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SeleccionPregunta(ViewModel: ViewModel) {
+    val types = listOf("Java", "JavaScript", "HTML", "CSS")
+    val default = 0
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedType by remember { mutableStateOf(types[default]) } // (1)
+
+    ViewModel.campoSelected(
+        campo = "Java"
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded // (2)
+        },
+        modifier = Modifier.width(150.dp)
+    ) {
+        TextField(
+            readOnly = true, // (3)
+            value = selectedType, // (4)
+            onValueChange = { },
+            label = { Text("Campo") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon( // (5)
+                    expanded = expanded
+                )
+            },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            }
+        ) {
+            types.forEach { selectionOption ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedType = selectionOption
+                        expanded = false
+                        ViewModel.campoSelected(
+                            campo = selectedType
+                        )
+                    }
+                ) {
+                    Text(text = selectionOption)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SeleccionRespuesta(ViewModel: ViewModel) {
+    val types = listOf("respuesta1", "respuesta2", "respuesta3")
+    val default = 0
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedTypeR by remember { mutableStateOf(types[default]) } // (1)
+
+    ViewModel.campoSelected(
+        campo = "respuesta1"
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded // (2)
+        },
+        modifier = Modifier.width(150.dp)
+    ) {
+        TextField(
+            readOnly = true, // (3)
+            value = selectedTypeR, // (4)
+            onValueChange = { },
+            label = { Text("Respuesta correcta") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon( // (5)
+                    expanded = expanded
+                )
+            },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            }
+        ) {
+            types.forEach { selectionOption ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedTypeR = selectionOption
+                        expanded = false
+                        ViewModel.respuestaSelected(
+                            respuesta = selectedTypeR
+                        )
+                    }
+                ) {
+                    Text(text = selectionOption)
+                }
             }
         }
     }
