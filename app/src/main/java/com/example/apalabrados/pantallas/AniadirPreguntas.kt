@@ -24,11 +24,11 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel){
+fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    Scaffold (
+    Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopBarGeneral(
@@ -46,14 +46,14 @@ fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel){
             }
         }
 
-    ){
+    ) {
         aniadirPreguntasContent(ViewModel)
     }
 }
 
 
 @Composable
-fun aniadirPreguntasContent(ViewModel:ViewModel){
+fun aniadirPreguntasContent(ViewModel: ViewModel) {
     val db = FirebaseFirestore.getInstance()
 
     val campo by ViewModel.campo.observeAsState(initial = "")
@@ -73,11 +73,10 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             .fillMaxSize()
             .background(
                 brush = Brush.horizontalGradient(colors = gradientColors),
-            )
-        ,
+            ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(
             text = "Formulario añadir preguntas",
             fontWeight = FontWeight.ExtraBold
@@ -91,7 +90,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
 
         OutlinedTextField(
             value = pregunta,
-            onValueChange ={
+            onValueChange = {
                 ViewModel.onCompletedFields(
                     pregunta = it,
                     respuesta1 = respuesta1,
@@ -107,8 +106,8 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         Spacer(modifier = Modifier.size(5.dp))
 
         OutlinedTextField(
-            value = respuesta1 ,
-            onValueChange ={
+            value = respuesta1,
+            onValueChange = {
                 ViewModel.onCompletedFields(
                     pregunta = pregunta,
                     respuesta1 = it,
@@ -125,8 +124,8 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
 
 
         OutlinedTextField(
-            value = respuesta2 ,
-            onValueChange ={
+            value = respuesta2,
+            onValueChange = {
                 ViewModel.onCompletedFields(
                     pregunta = pregunta,
                     respuesta1 = respuesta1,
@@ -142,8 +141,8 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         Spacer(modifier = Modifier.size(5.dp))
 
         OutlinedTextField(
-            value = respuesta3 ,
-            onValueChange ={
+            value = respuesta3,
+            onValueChange = {
                 ViewModel.onCompletedFields(
                     pregunta = pregunta,
                     respuesta1 = respuesta1,
@@ -159,7 +158,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         Spacer(modifier = Modifier.size(5.dp))
         val context = LocalContext.current
 
-        SeleccionRespuesta(ViewModel())
+        SeleccionRespuesta(ViewModel)
 
         Spacer(modifier = Modifier.padding(16.dp))
 
@@ -169,23 +168,31 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(onClick = {
-                if (pregunta.isEmpty()) {
+                if (campo.isEmpty()) {
                     Toast
-                        .makeText(context, "Raza en blanco", Toast.LENGTH_LONG)
+                        .makeText(context, "campo en blanco", Toast.LENGTH_LONG)
                         .show()
-                } else if (respuesta1.isEmpty()) {
+                }else if (pregunta.isEmpty()) {
                     Toast
-                        .makeText(context, "Color en blanco", Toast.LENGTH_LONG)
+                        .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
+                        .show()
+                }  else if (respuesta1.isEmpty()) {
+                    Toast
+                        .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
                         .show()
                 } else if (respuesta2.isEmpty()) {
                     Toast
-                        .makeText(context, "Peso en blanco", Toast.LENGTH_LONG)
+                        .makeText(context, "respuesta2 en blanco", Toast.LENGTH_LONG)
                         .show()
-                } else if (respuesta3.isEmpty()) {
+                }  else if (respuesta3.isEmpty()) {
                     Toast
-                        .makeText(context, "Genero en blanco", Toast.LENGTH_LONG)
+                        .makeText(context, "respuesta3 en blanco", Toast.LENGTH_LONG)
                         .show()
-                } else {
+                } else if (respuesta.isEmpty()) {
+                    Toast
+                        .makeText(context, "Respuesta corercta en blanco", Toast.LENGTH_LONG)
+                        .show()
+                }else {
                     db
                         .collection(campo)
                         .document()
@@ -208,6 +215,7 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
                                 .show()
                         }
                 }
+                println(ViewModel.respuesta.value)
                 println(ViewModel.campo.value)
                 println("alijdlisajdliajds")
             }) {
@@ -222,18 +230,15 @@ fun aniadirPreguntasContent(ViewModel:ViewModel){
         }
     }
 }
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SeleccionPregunta(ViewModel: ViewModel) {
-    val types = listOf("Java", "JavaScript", "HTML", "CSS")
+    val types = listOf("","Java", "JavaScript", "HTML", "CSS")
     val default = 0
 
     var expanded by remember { mutableStateOf(false) }
     var selectedType by remember { mutableStateOf(types[default]) } // (1)
-
-    ViewModel.campoSelected(
-        campo = "Java"
-    )
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -280,20 +285,17 @@ fun SeleccionPregunta(ViewModel: ViewModel) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SeleccionRespuesta(ViewModel: ViewModel) {
-    val types = listOf("respuesta1", "respuesta2", "respuesta3")
+    val responseTypes = listOf("","respuesta1", "respuesta2", "respuesta3")
     val default = 0
 
-    var expanded by remember { mutableStateOf(false) }
-    var selectedTypeR by remember { mutableStateOf(types[default]) } // (1)
+    var expandedR by remember { mutableStateOf(false) }
+    var selectedTypeR by remember { mutableStateOf(responseTypes[default]) } // (1)
 
-    ViewModel.campoSelected(
-        campo = "respuesta1"
-    )
 
     ExposedDropdownMenuBox(
-        expanded = expanded,
+        expanded = expandedR,
         onExpandedChange = {
-            expanded = !expanded // (2)
+            expandedR = !expandedR // (2)
         },
         modifier = Modifier.width(150.dp)
     ) {
@@ -304,22 +306,22 @@ fun SeleccionRespuesta(ViewModel: ViewModel) {
             label = { Text("Respuesta correcta") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon( // (5)
-                    expanded = expanded
+                    expanded = expandedR
                 )
             },
             colors = ExposedDropdownMenuDefaults.textFieldColors()
         )
         ExposedDropdownMenu(
-            expanded = expanded,
+            expanded = expandedR,
             onDismissRequest = {
-                expanded = false
+                expandedR = false
             }
         ) {
-            types.forEach { selectionOption ->
+            responseTypes.forEach { selectionOption ->
                 DropdownMenuItem(
                     onClick = {
                         selectedTypeR = selectionOption
-                        expanded = false
+                        expandedR = false
                         ViewModel.respuestaSelected(
                             respuesta = selectedTypeR
                         )

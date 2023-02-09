@@ -23,7 +23,7 @@ fun SplashScreen(navController: NavController){
     LaunchedEffect(key1 = true){
         //delay(3000)
         navController.popBackStack()
-        navController.navigate(PantallasApp.LoginScreen.route)
+        navController.navigate(PantallasApp.AniadirPreguntas.route)
     }
 
     Splash()
@@ -33,7 +33,7 @@ fun SplashScreen(navController: NavController){
 fun Splash(){
     Column (
 
-        modifier = androidx.compose.ui.Modifier.fillMaxSize().background(color = AzulFondo),
+        modifier = Modifier.fillMaxSize().background(color = AzulFondo),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
             ){
