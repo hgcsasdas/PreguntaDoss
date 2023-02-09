@@ -1,8 +1,8 @@
 package com.example.apalabrados.pantallas
 
-import androidx.navigation.NavController
+import androidx.compose.ui.Modifier
 import com.example.apalabrados.viewModel.ViewModel
 
-fun Login(navController: NavController, ViewModel: ViewModel) {
+fun Login(navController: Modifier, ViewModel: ViewModel) {
 
 }
