@@ -3,7 +3,6 @@ package com.example.apalabrados.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.apalabrados.model.MenuOption
 
 
 open class ViewModel : ViewModel() {
