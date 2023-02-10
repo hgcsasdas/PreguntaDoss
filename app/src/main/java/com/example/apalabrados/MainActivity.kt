@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.apalabrados.login.ui.LoginViewModel
 import com.example.apalabrados.navegacion.NavegacionApp
 import com.example.apalabrados.ui.theme.ApalabradosTheme
 import com.example.apalabrados.viewModel.ViewModel
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    NavegacionApp(ViewModel())
+                    NavegacionApp(ViewModel(), LoginViewModel())
                 }
             }
         }
