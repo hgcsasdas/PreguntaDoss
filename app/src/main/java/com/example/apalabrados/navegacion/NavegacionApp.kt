@@ -5,11 +5,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apalabrados.login.ui.LoginScreen
+import com.example.apalabrados.login.ui.LoginViewModel
 import com.example.apalabrados.pantallas.*
 import com.example.apalabrados.viewModel.ViewModel
 
 @Composable
-fun NavegacionApp(ViewModel: ViewModel) {
+fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = PantallasApp.SplashScreen.route){
         composable(route= PantallasApp.SplashScreen.route){
@@ -25,7 +26,7 @@ fun NavegacionApp(ViewModel: ViewModel) {
         }
         composable(route= PantallasApp.LoginScreen.route){
             LoginScreen(
-
+                LoginViewModel
             )
         }
         composable(route= PantallasApp.AniadirPreguntas.route){
