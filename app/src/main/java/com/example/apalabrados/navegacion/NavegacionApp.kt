@@ -35,5 +35,10 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
+        composable(route= PantallasApp.PerfilScreen.route){
+            Perfil(
+
+            )
+        }
     }
 }
