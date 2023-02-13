@@ -30,22 +30,7 @@ fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            TopBarGeneral(
-                onMenuButtonClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                },
-                onActionButtonClick = { /* */ }
-            )
-        },
-        drawerContent = { // Contenido del drawer
-            DrawerContent { // Cerrar drawer
-                scope.launch { scaffoldState.drawerState.close() }
-            }
-        }
-
+        bottomBar = {BottomBar(navController, ViewModel)}
     ) {
         aniadirPreguntasContent(ViewModel)
     }

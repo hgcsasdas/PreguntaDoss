@@ -27,6 +27,16 @@ open class ViewModel : ViewModel() {
     private val _respuesta = MutableLiveData<String>()
     val respuesta: LiveData<String> = _respuesta
 
+
+    private val _selectedIndex = MutableLiveData<Int>()
+    val selectedIndex: LiveData<Int> = _selectedIndex
+
+    fun indexUpdate(
+        index: Int
+    ){
+        _selectedIndex.value = index
+    }
+
     fun onCompletedFields(
         pregunta: String,
         respuesta1: String,

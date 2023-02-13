@@ -2,23 +2,21 @@ package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.apalabrados.modelos.bottomNavItems
+import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.viewModel.ViewModel
 import kotlinx.coroutines.launch
 
@@ -31,80 +29,56 @@ fun Inicio(navController: NavController, ViewModel: ViewModel){
 
     Scaffold (
         scaffoldState = scaffoldState,
-        topBar = {
-            TopBarGeneral(
-                onMenuButtonClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                },
-                onActionButtonClick = { /* */ }
-            )
-        },
-        drawerContent = { // Contenido del drawer
-            DrawerContent { // Cerrar drawer
-                scope.launch { scaffoldState.drawerState.close() }
-            }
-        }
 
-    ){
-
+        bottomBar = {BottomBar(navController, ViewModel)}
+    ) {
+        //content area
+        Box(modifier = Modifier
+            .background(Color(0xff546e7a))
+            .fillMaxSize())
     }
 }
 
 @Composable
-fun TopBarGeneral(
-    onMenuButtonClick: () -> Unit, // Acciones a ejecutar
-    onActionButtonClick: (String) -> Unit
-) {
+fun BottomBar(navController: NavController, ViewModel: ViewModel) {
+    val selectedIndex by ViewModel.selectedIndex.observeAsState(initial = 0)
 
-    TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = onMenuButtonClick ) {
-                Icon(imageVector = Icons.Filled.Menu, contentDescription = "Abrir menú desplegable")
-            }
+    BottomNavigation(elevation = 10.dp) {
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Home,"")
         },
-        title = { Text(text = "PreguntaDoss" +
-                "") },
-        actions = {
-            IconButton(onClick = { }) {
-                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Más")
-            }
-        }
-    )
-}
+            label = { Text(text = "Inicio") },
+            selected = (ViewModel.selectedIndex.value == 0),
+            onClick = {
+                ViewModel.indexUpdate(
+                    index = 0
+                )
+                navController.navigate(PantallasApp.Inicio.route)
+            })
 
-@Composable
-fun DrawerContent(closeDrawer: () -> Unit) {
-    val sections = listOf(
-        "Perfil",
-        "Jugar",
-        "Mini Juegos",
-        "Añadir preguntas",
-    )
-    Column(
-        Modifier
-            .padding(vertical = 8.dp)
-    ) {
-        sections.forEach { section ->
-            TextButton(
-                onClick = closeDrawer, // Ejecución
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterStart
-                ) {
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Add,"")
+        },
+            label = { Text(text = "Preguntas") },
+            selected = (ViewModel.selectedIndex.value == 1),
+            onClick = {
+                ViewModel.indexUpdate(
+                    index = 1
+                )
+                navController.navigate(PantallasApp.AniadirPreguntas.route)
+            })
 
-                    val textColor = MaterialTheme.colors.onSurface
-                    Text(
-                        text = section,
-                        style = MaterialTheme.typography.body2.copy(color = textColor)
-                    )
-                }
-            }
-        }
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Person,"")
+        },
+            label = { Text(text = "Perfil") },
+            selected = (ViewModel.selectedIndex.value == 2),
+            onClick = {
+                ViewModel.indexUpdate(
+                    index = 2
+                )
+                navController.navigate(PantallasApp.PerfilScreen.route)
+            })
     }
 }
