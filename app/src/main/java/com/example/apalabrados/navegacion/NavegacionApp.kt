@@ -37,7 +37,20 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
         }
         composable(route= PantallasApp.PerfilScreen.route){
             Perfil(
-
+                navController,
+                ViewModel
+            )
+        }
+        composable(route= PantallasApp.SeleccionNumJugador.route){
+            SeleccionNumJugador(
+                navController,
+                ViewModel
+            )
+        }
+        composable(route= PantallasApp.SeleccionMiniJuego.route){
+            SeleccionMiniJuego(
+                navController,
+                ViewModel
             )
         }
     }

@@ -6,6 +6,7 @@ sealed class PantallasApp (val route: String) {
     object AniadirPreguntas: PantallasApp(route = "AniadirPreguntas")
     object LoginScreen: PantallasApp(route= "LoginScreen")
     object PerfilScreen: PantallasApp(route= "PerfilScreen")
-
+    object SeleccionNumJugador: PantallasApp(route= "SeleccionNumJugador")
+    object SeleccionMiniJuego: PantallasApp(route= "SeleccionMiniJuego")
 
 }
