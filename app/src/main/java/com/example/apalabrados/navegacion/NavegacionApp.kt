@@ -53,5 +53,15 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
+        composable(route= PantallasApp.JugarP1.route){
+            JugarP1(
+
+            )
+        }
+        composable(route= PantallasApp.JugarP2.route){
+            JugarP2(
+
+            )
+        }
     }
 }

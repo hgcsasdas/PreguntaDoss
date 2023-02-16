@@ -89,7 +89,7 @@ fun InicioContent(navController: NavController){
                 ),
                 modifier = Modifier.size(160.dp, 60.dp)
             ) {
-                Text(text = "Mini Juegos")
+                Text(text = "Jugar")
             }
         }
     }
