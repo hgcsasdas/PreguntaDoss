@@ -1,7 +1,6 @@
 package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,15 +10,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.apalabrados.conexion.aniadirPreguntaButton
 import com.example.apalabrados.viewModel.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -38,11 +33,6 @@ fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel) {
 
 @Composable
 fun aniadirPreguntasContent(ViewModel: ViewModel) {
-    val db = FirebaseFirestore.getInstance()
-
-    val campo by ViewModel.campo.observeAsState(initial = "")
-    val respuesta by ViewModel.respuesta.observeAsState(initial = "")
-
 
     val pregunta by ViewModel.pregunta.observeAsState(initial = "")
     val respuesta1 by ViewModel.respuesta1.observeAsState(initial = "")
@@ -140,7 +130,6 @@ fun aniadirPreguntasContent(ViewModel: ViewModel) {
         )
 
         Spacer(modifier = Modifier.size(5.dp))
-        val context = LocalContext.current
 
         SeleccionRespuesta(ViewModel)
 
@@ -151,66 +140,7 @@ fun aniadirPreguntasContent(ViewModel: ViewModel) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = {
-                if (campo.isEmpty()) {
-                    Toast
-                        .makeText(context, "campo en blanco", Toast.LENGTH_LONG)
-                        .show()
-                }else if (pregunta.isEmpty()) {
-                    Toast
-                        .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
-                        .show()
-                }  else if (respuesta1.isEmpty()) {
-                    Toast
-                        .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
-                        .show()
-                } else if (respuesta2.isEmpty()) {
-                    Toast
-                        .makeText(context, "respuesta2 en blanco", Toast.LENGTH_LONG)
-                        .show()
-                }  else if (respuesta3.isEmpty()) {
-                    Toast
-                        .makeText(context, "respuesta3 en blanco", Toast.LENGTH_LONG)
-                        .show()
-                } else if (respuesta.isEmpty()) {
-                    Toast
-                        .makeText(context, "Respuesta corercta en blanco", Toast.LENGTH_LONG)
-                        .show()
-                }else {
-                    db
-                        .collection(campo)
-                        .document()
-                        .set(mapOf(
-                            "pregunta" to pregunta,
-                            "respuesta1" to respuesta1,
-                            "respuesta2" to respuesta2,
-                            "respuesta3" to respuesta3,
-                            "correcta" to respuesta
-                        ))
-                        .addOnSuccessListener {
-                            ViewModel.limpiarCampos()
-                            Toast
-                                .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
-                                .show()
-                        }
-                        .addOnFailureListener {
-                            Toast
-                                .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
-                                .show()
-                        }
-                }
-                println(ViewModel.respuesta.value)
-                println(ViewModel.campo.value)
-                println("alijdlisajdliajds")
-            }) {
-                Text(
-                    text = "Añadir Pregunta",
-                    fontSize = 26.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                )
-            }
+           aniadirPreguntaButton(ViewModel)
         }
     }
 }
