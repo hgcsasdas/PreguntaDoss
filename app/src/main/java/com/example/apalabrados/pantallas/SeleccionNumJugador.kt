@@ -14,15 +14,21 @@ fun SeleccionNumJugador(navController: NavController, viewModel: ViewModel){
     Column() {
         Button(onClick = {
             jugador = "pepe"
-            navController.navigate(PantallasApp.Jugar.route)
+            navController.navigate(PantallasApp.JugarP1.route)
         }) {
-            Text(text = "J1")
+            Text(text = "Crear partida")
         }
         Button(onClick = {
             jugador = "Luis"
-            navController.navigate(PantallasApp.Jugar.route)
+            navController.navigate(PantallasApp.JugarP2.route)
         }) {
-            Text(text = "J2")
+            Text(text = "Unirse a partida")
+        }
+        Button(onClick = {
+            jugador = "Luis"
+            navController.navigate(PantallasApp.JugarP2.route)
+        }) {
+            Text(text = "Mis partidas")
         }
     }
 
