@@ -14,13 +14,13 @@ fun SeleccionNumJugador(navController: NavController, viewModel: ViewModel){
     Column() {
         Button(onClick = {
             jugador = "pepe"
-            navController.navigate(PantallasApp.Jugar.route)
+            navController.navigate(PantallasApp.JugarP1.route)
         }) {
             Text(text = "J1")
         }
         Button(onClick = {
             jugador = "Luis"
-            navController.navigate(PantallasApp.Jugar.route)
+            navController.navigate(PantallasApp.JugarP2.route)
         }) {
             Text(text = "J2")
         }
