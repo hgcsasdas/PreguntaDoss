@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.apalabrados.R
-import com.example.apalabrados.modelos.bottomNavItems
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.ui.theme.AzulFondo
 import com.example.apalabrados.viewModel.ViewModel
