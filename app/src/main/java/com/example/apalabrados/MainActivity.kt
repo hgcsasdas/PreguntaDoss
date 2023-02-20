@@ -6,11 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.apalabrados.login.ui.LoginViewModel
+import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.NavegacionApp
 import com.example.apalabrados.ui.theme.ApalabradosTheme
 import com.example.apalabrados.viewModel.ViewModel
