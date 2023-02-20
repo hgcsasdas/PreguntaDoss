@@ -16,13 +16,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.login.ui.loginP.LoginViewModel
+import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.ui.theme.AzulFondo
+import com.example.apalabrados.viewModel.ViewModel
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
     Column(
         Modifier.background(color = AzulFondo)
     ) {
@@ -32,13 +36,13 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 .padding(16.dp)
                 .background(color = AzulFondo)
         ) {
-            Login(Modifier.align(Alignment.Center), viewModel)
+            Login(Modifier.align(Alignment.Center), viewModel, navController)
         }
     }
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
 
     val email : String by viewModel.email.observeAsState(initial = "")
     val password : String by viewModel.password.observeAsState(initial = "")
@@ -69,9 +73,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
                     coroutineScope.launch { viewModel.onLoginSelected() }
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
-                RegistroButton(loginEnable) {
-                    coroutineScope.launch { viewModel.onLoginSelected() }
-                }
+                RegistroButton(navController)
             }
 
         }
@@ -100,9 +102,11 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
 }
 
 @Composable
-fun RegistroButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+fun RegistroButton(navController: NavController) {
     Button(
-        onClick = {onLoginSelected() },
+        onClick = {
+            navController.navigate(PantallasApp.RegistroScreen.route)
+        },
         modifier = Modifier
             .width(150.dp)
             .height(55.dp),
@@ -111,7 +115,7 @@ fun RegistroButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
             disabledBackgroundColor = Color(0xFFF78058),
             contentColor = Color.White,
             disabledContentColor = Color.White
-        ), enabled = loginEnable
+        ), enabled = true
     ) {
         Text(text = "Resgistro")
     }

@@ -5,7 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apalabrados.login.ui.LoginScreen
-import com.example.apalabrados.login.ui.LoginViewModel
+import com.example.apalabrados.login.ui.RegistroScreen
+import com.example.apalabrados.login.ui.loginP.LoginViewModel
+import com.example.apalabrados.login.ui.registro.RegistroViewModel
 import com.example.apalabrados.pantallas.*
 import com.example.apalabrados.viewModel.ViewModel
 
@@ -26,7 +28,14 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
         }
         composable(route= PantallasApp.LoginScreen.route){
             LoginScreen(
-                LoginViewModel
+                LoginViewModel(),
+                navController
+            )
+        }
+        composable(route= PantallasApp.RegistroScreen.route){
+            RegistroScreen(
+                RegistroViewModel()
+
             )
         }
         composable(route= PantallasApp.AniadirPreguntas.route){
