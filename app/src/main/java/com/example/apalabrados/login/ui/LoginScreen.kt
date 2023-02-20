@@ -60,9 +60,19 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPassword(Modifier.align(Alignment.End))
             Spacer(modifier = Modifier.padding(16.dp))
-            LoginButton(loginEnable) {
-                coroutineScope.launch {viewModel.onLoginSelected()}
+            Row (
+                modifier = Modifier.size(380.dp, 100.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+                    ){
+                LoginButton(loginEnable) {
+                    coroutineScope.launch { viewModel.onLoginSelected() }
                 }
+                Spacer(modifier = Modifier.padding(10.dp))
+                RegistroButton(loginEnable) {
+                    coroutineScope.launch { viewModel.onLoginSelected() }
+                }
+            }
 
         }
     }
@@ -76,8 +86,8 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
     Button(
         onClick = {onLoginSelected() },
         modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
+            .width(150.dp)
+            .height(55.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFFFF4303),
             disabledBackgroundColor = Color(0xFFF78058),
@@ -86,6 +96,24 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
         ), enabled = loginEnable
     ) {
         Text(text = "Iniciar sesión")
+    }
+}
+
+@Composable
+fun RegistroButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+    Button(
+        onClick = {onLoginSelected() },
+        modifier = Modifier
+            .width(150.dp)
+            .height(55.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFFF4303),
+            disabledBackgroundColor = Color(0xFFF78058),
+            contentColor = Color.White,
+            disabledContentColor = Color.White
+        ), enabled = loginEnable
+    ) {
+        Text(text = "Resgistro")
     }
 }
 
