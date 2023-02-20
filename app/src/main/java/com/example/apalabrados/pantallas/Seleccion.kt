@@ -6,27 +6,33 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.apalabrados.conexion.aniadirPartida
+import com.example.apalabrados.helpers.generarCodigoSala
+import com.example.apalabrados.model.Usuario
 import com.example.apalabrados.navegacion.PantallasApp
 
 @Composable
-fun SeleccionNumJugador(navController: NavController, viewModel: ViewModel){
+fun Seleccion(navController: NavController, viewModel: ViewModel){
+    val pepe = Usuario("Juan", 5)
 
     Column() {
         Button(onClick = {
-            jugador = "pepe"
-            navController.navigate(PantallasApp.JugarP1.route)
+            val codigoSala = generarCodigoSala()
+            aniadirPartida(jugador1 = pepe.nombre, codigoSala)
+            navController.navigate(PantallasApp.CrearPartida.route + "/" + codigoSala)
+
         }) {
             Text(text = "Crear partida")
         }
         Button(onClick = {
             jugador = "Luis"
-            navController.navigate(PantallasApp.JugarP2.route)
+            navController.navigate(PantallasApp.UnirsePartida.route)
         }) {
             Text(text = "Unirse a partida")
         }
         Button(onClick = {
             jugador = "Luis"
-            navController.navigate(PantallasApp.JugarP2.route)
+            navController.navigate(PantallasApp.MisPartidas.route)
         }) {
             Text(text = "Mis partidas")
         }

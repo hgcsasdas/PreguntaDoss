@@ -1,9 +1,11 @@
 package com.example.apalabrados.navegacion
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.apalabrados.login.ui.LoginScreen
 import com.example.apalabrados.login.ui.LoginViewModel
 import com.example.apalabrados.pantallas.*
@@ -41,8 +43,8 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
-        composable(route= PantallasApp.SeleccionNumJugador.route){
-            SeleccionNumJugador(
+        composable(route= PantallasApp.Seleccion.route){
+            Seleccion(
                 navController,
                 ViewModel
             )
@@ -53,13 +55,21 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
-        composable(route= PantallasApp.JugarP1.route){
-            JugarP1(
+        composable(route= PantallasApp.CrearPartida.route + "/{codigoSala}",
+            arguments = listOf(navArgument(name = "codigoSala"){
+                type = NavType.StringType
+            })){
+            CrearPartida(
+                navController, it.arguments?.getString("codigoSala")
+            )
+        }
+        composable(route= PantallasApp.UnirsePartida.route){
+            UnirsePartida(
 
             )
         }
-        composable(route= PantallasApp.JugarP2.route){
-            JugarP2(
+        composable(route= PantallasApp.MisPartidas.route){
+            MisPartidas(
 
             )
         }

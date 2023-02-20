@@ -80,7 +80,7 @@ fun InicioContent(navController: NavController){
             //JUGAR BUTTON
 
             Button(onClick = {
-                navController.navigate(PantallasApp.SeleccionNumJugador.route)
+                navController.navigate(PantallasApp.Seleccion.route)
             },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFF00C4F2),

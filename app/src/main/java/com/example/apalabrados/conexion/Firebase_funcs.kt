@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.apalabrados.helpers.generarCodigoSala
 import com.example.apalabrados.viewModel.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -94,10 +95,7 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
     }
 }
 
-@Composable
-fun aniadirPartida(){
-    val context = LocalContext.current
-
+fun aniadirPartida(jugador1: String, codigoSala: String){
     val db = FirebaseFirestore.getInstance()
 
     val partidaData = hashMapOf(
@@ -106,9 +104,10 @@ fun aniadirPartida(){
         "subturno" to 1,
         "logrosj1" to 0,
         "logrosj2" to 0,
-        "j1" to "",
-        "j2" to "Pipo",
-        "ganador" to ""
+        "j1" to jugador1,
+        "j2" to "",
+        "ganador" to "",
+        "codigo" to codigoSala
     )
 
     db
@@ -116,10 +115,10 @@ fun aniadirPartida(){
         .document()
         .set(partidaData)
         .addOnSuccessListener {
-            Toast.makeText(context, "Partida creada correctamente", Toast.LENGTH_LONG).show()
+            print("Partida creada correctamente")
         }
         .addOnFailureListener {
-            Toast.makeText(context, "No se ha podido crear partida", Toast.LENGTH_LONG).show()
+            print("Partida no creada correctamente")
         }
 }
 
@@ -158,4 +157,5 @@ fun buscarJugadorLibre(nombre: String) {
         }
     }
 }
+
 
