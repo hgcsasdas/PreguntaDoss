@@ -1,4 +1,3 @@
 package com.example.apalabrados.model
 
-class Usuario {
-}
+class Usuario(val nombre: String, var partidasGanadas: Int)

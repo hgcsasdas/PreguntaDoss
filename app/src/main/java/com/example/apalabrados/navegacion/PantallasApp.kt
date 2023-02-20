@@ -7,10 +7,11 @@ sealed class PantallasApp (val route: String) {
     object LoginScreen: PantallasApp(route= "LoginScreen")
     object RegistroScreen : PantallasApp(route = "RegistroScreen")
     object PerfilScreen: PantallasApp(route= "PerfilScreen")
-    object SeleccionNumJugador: PantallasApp(route= "SeleccionNumJugador")
-    object JugarP1: PantallasApp(route= "JugarP1")
-    object JugarP2: PantallasApp(route= "JugarP2")
+    object Seleccion: PantallasApp(route= "Seleccion")
+    object CrearPartida: PantallasApp(route= "CrearPartida")
+    object UnirsePartida: PantallasApp(route= "UnirsePartida")
 
     object SeleccionMiniJuego: PantallasApp(route= "SeleccionMiniJuego")
+    object MisPartidas: PantallasApp(route= "MisPartidas")
 
 }

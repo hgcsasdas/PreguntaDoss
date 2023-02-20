@@ -7,7 +7,7 @@ import com.example.apalabrados.conexion.buscarJugadorLibre
 
 
 @Composable
-fun JugarP2(){
+fun UnirsePartida(){
     Text(text = jugador)
     buscarJugadorLibre("Juanito")
 }
