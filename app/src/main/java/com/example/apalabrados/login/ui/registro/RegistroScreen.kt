@@ -18,15 +18,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.apalabrados.R
 import com.example.apalabrados.conexion.db
 import com.example.apalabrados.login.ui.registro.RegistroViewModel
+import com.example.apalabrados.navegacion.PantallasApp
+import com.example.apalabrados.session.session
 import com.example.apalabrados.ui.theme.AzulFondo
-import kotlinx.coroutines.launch
+import com.google.android.gms.cast.framework.SessionManager
 
 
 @Composable
-fun RegistroScreen(viewModel: RegistroViewModel) {
+fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
 
     Column(
         Modifier.background(color = AzulFondo)
@@ -37,13 +40,13 @@ fun RegistroScreen(viewModel: RegistroViewModel) {
                 .padding(16.dp)
                 .background(color = AzulFondo)
         ) {
-            Registro(Modifier.align(Alignment.Center), viewModel)
+            Registro(Modifier.align(Alignment.Center), viewModel, navController)
         }
     }
 }
 
 @Composable
-fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
+fun Registro(modifier: Modifier, viewModel: RegistroViewModel, navController: NavController) {
 
     val email : String by viewModel.email.observeAsState(initial = "")
     val password : String by viewModel.password.observeAsState(initial = "")
@@ -73,7 +76,7 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                RegistroButtonR(resgistroEnable, viewModel)
+                RegistroButtonR(resgistroEnable, viewModel, navController)
                 }
             }
 
@@ -81,16 +84,22 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
     }
 
 @Composable
-fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel) {
+fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navController: NavController) {
     val dbName = "usuarios"
     val context = LocalContext.current
+
     Button(
         onClick = {
+            val sessionManager = session(context)
+
             val dato = hashMapOf(
                 "usuario" to viewModel.usuario.value,
                 "email" to viewModel.email.value,
                 "password" to viewModel.password.value
             )
+            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
+
+
             viewModel.usuario.value?.let {
                 db.collection(dbName)
                     .document(it)
@@ -99,6 +108,8 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel) {
                         Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_LONG)
                             .show()
                         viewModel.limpiarCampos()
+                        sessionManager.loguear()
+                        navController.navigate(PantallasApp.Inicio.route)
 
                     }
                     .addOnFailureListener {
