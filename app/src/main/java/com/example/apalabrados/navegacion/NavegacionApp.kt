@@ -34,8 +34,8 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
         }
         composable(route= PantallasApp.RegistroScreen.route){
             RegistroScreen(
-                RegistroViewModel()
-
+                RegistroViewModel(),
+                navController
             )
         }
         composable(route= PantallasApp.AniadirPreguntas.route){

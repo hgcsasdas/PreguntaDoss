@@ -1,23 +1,24 @@
 package com.example.apalabrados.pantallas
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirPartida
 import com.example.apalabrados.mvvm.ViewModel
-
+import com.example.apalabrados.session.session
 
 
 @Composable
 fun CrearPartida(navController: NavController, ViewModel: ViewModel){
 // Crearemos una instanacia de partida a lgenerar un nombre de sala que nosotros queramos
 // y tendremos la posibilidad de generar un código aleatorio con un botón
+    val sessionManager = session(LocalContext.current)
 
     val codigoSala by ViewModel.codigoSala.observeAsState(initial = "")
 
@@ -38,6 +39,6 @@ fun CrearPartida(navController: NavController, ViewModel: ViewModel){
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        aniadirPartida("pepe", ViewModel)
+        aniadirPartida(sessionManager.getNick().toString(), ViewModel)
     }
 }

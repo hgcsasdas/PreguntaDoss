@@ -33,7 +33,6 @@ fun buscarEnFirebase(codigoBuscado: String): Boolean {
 }
 fun obtenerNombreJ2(codigo: String, varBuscar: String): String {
     var nombre: String = ""
-    print(codigo + "    " + varBuscar)
     db.collection("partida")
         .get()
         .addOnSuccessListener { querySnapshot ->

@@ -13,24 +13,21 @@ import com.example.apalabrados.navegacion.PantallasApp
 
 @Composable
 fun Seleccion(navController: NavController, viewModel: ViewModel){
-    val pepe = Usuario("Juan", 5)
+    val pepe = Usuario("Juan", "asdasda@gmail.com", "asdasd")
 
     Column() {
         Button(onClick = {
             navController.navigate(PantallasApp.CrearPartida.route)
             //getall()
-
         }) {
             Text(text = "Crear partida")
         }
         Button(onClick = {
-            jugador = "Luis"
             navController.navigate(PantallasApp.UnirsePartida.route)
         }) {
             Text(text = "Unirse a partida")
         }
         Button(onClick = {
-            jugador = "Luis"
             navController.navigate(PantallasApp.MisPartidas.route)
         }) {
             Text(text = "Mis partidas")
