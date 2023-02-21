@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegistroScreen(viewModel: RegistroViewModel) {
+
     Column(
         Modifier.background(color = AzulFondo)
     ) {
@@ -98,6 +99,7 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel) {
                         Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_LONG)
                             .show()
                         viewModel.limpiarCampos()
+
                     }
                     .addOnFailureListener {
                         Toast.makeText(context, "No se ha podido reistrar el usuario", Toast.LENGTH_LONG)
