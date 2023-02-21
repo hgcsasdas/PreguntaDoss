@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -18,21 +18,28 @@ var jugador = ""
 
 @Composable
 fun CrearPartida(navController: NavController, codigoSala: String?){
-    Text(text = jugador)
-    buscarJugadorLibre("Juanito")
-    codigoSala?.let{
+    Column {
+        Text(text = jugador)
+        var count by remember { mutableStateOf("asd") }
 
+        buscarJugadorLibre("Juanito")
+        codigoSala?.let {
+
+            Spacer(modifier = Modifier.padding(20.dp))
+
+
+            Button(onClick = {
+                count = obtenerNombreJ2(it, "j1")
+            }) {
+                Text(text = "asdasd")
+            }
+        }
         Spacer(modifier = Modifier.padding(20.dp))
-
-
-    Button(onClick = {
-        jugador = obtenerNombreJ2(it, "j1")
-    }) {
-        Text(text = "dsadasdad")
+        Text(text = count)
+        codigoSala?.let {
+            Text(text = it)
+        }
     }
-    }
-    codigoSala?.let{
-        Text(text = it)}
 }
 
 @Composable
