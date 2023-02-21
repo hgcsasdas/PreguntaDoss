@@ -1,31 +1,36 @@
 package com.example.apalabrados.conexion
 
+import android.util.Log
+import com.example.apalabrados.model.Partida
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 
 val db = FirebaseFirestore.getInstance()
 
 fun buscarEnFirebase(codigoBuscado: String): Boolean {
-
-    val docRef = db.collection("partida").document("documentId")
     var existe = false
+    val docRef = db.collection("partida")
     docRef.get()
-        .addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val codigo = documentSnapshot.getString("codigo")
-                if (codigo != null && codigo == codigoBuscado) {
-                    // El código coincide, devolver false
-                    existe = true
-                    print(existe)
+        .addOnSuccessListener { queryDocumentSnapshots ->
+            if (!queryDocumentSnapshots.isEmpty) {
+                val list = queryDocumentSnapshots.documents
+                for (d in list) {
+                    val partida: Partida? = d.toObject(Partida::class.java)
+                    if (codigoBuscado == partida?.codigo) {
+                        existe = true
+                        println("falso")
+                        break // exit the loop
+                    } else {
+                        existe = false
+                    }
                 }
             }
         }
         .addOnFailureListener { exception ->
-            // Se produjo un error al buscar en Firebase
-            print("No se puc mas")
+            // handle exception
         }
     return existe
 }
-
 fun obtenerNombreJ2(codigo: String, varBuscar: String): String {
     var nombre: String = ""
     print(codigo + "    " + varBuscar)
@@ -41,4 +46,47 @@ fun obtenerNombreJ2(codigo: String, varBuscar: String): String {
         }
     print(nombre + "siuu")
     return nombre
+}
+
+fun getall(){
+
+    val docRef = db.collection("partida")
+    docRef.
+    get()
+        .addOnSuccessListener { result ->
+            for (document in result) {
+                val partida: Partida? = document.toObject(Partida::class.java)
+                Log.d("DATOS: ","${partida?.j1}")
+                println("asldsalhdlsahdlsahdaisdlisahda")
+                /*if (partida?.codigo == "NRVG"){
+                    println("PERRAAA")
+                }*/
+
+            }
+        }
+        .addOnFailureListener { exception ->
+
+        }
+}
+
+fun generarCodigo(): String {
+    val caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    val longitudCodigo = 4
+    val codigo = StringBuilder()
+    var existe: Boolean
+    do {
+        codigo.clear()
+        for (i in 0 until longitudCodigo) {
+            val aleatorio = (caracteres.indices).random()
+            codigo.append(caracteres[aleatorio])
+        }
+        existe = try {
+            val docRef = db.collection("partida")
+            val querySnapshot = Tasks.await(docRef.whereEqualTo("codigo", codigo.toString()).get())
+            !querySnapshot.isEmpty
+        } catch (e: Exception) {
+            false
+        }
+    } while (existe)
+    return codigo.toString()
 }

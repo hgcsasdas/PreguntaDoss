@@ -21,7 +21,6 @@ import com.example.apalabrados.R
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.ui.theme.AzulFondo
-import com.example.apalabrados.viewModel.ViewModel
 import kotlinx.coroutines.launch
 
 

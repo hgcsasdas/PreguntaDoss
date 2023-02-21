@@ -1,6 +1,6 @@
 package com.example.apalabrados.conexion
 
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -13,9 +13,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.example.apalabrados.helpers.generarCodigoSala
-import com.example.apalabrados.viewModel.ViewModel
+import com.example.apalabrados.mvvm.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 @Composable
@@ -95,31 +97,72 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
     }
 }
 
-fun aniadirPartida(jugador1: String, codigoSala: String){
+@Composable
+fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
+    val context = LocalContext.current
+
+    Button(onClick = {
+
+        val db = FirebaseFirestore.getInstance()
+
+        val partidaData = hashMapOf(
+            "partida" to 1,
+            "turno" to 1,
+            "subturno" to 1,
+            "logrosj1" to 0,
+            "logrosj2" to 0,
+            "j1" to jugador1,
+            "j2" to "",
+            "ganador" to "",
+            "codigo" to ViewModel.codigoSala.value
+        )
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val partidaEncontrada = ViewModel.codigoSala.value?.let { buscarPartidaPorCodigo(it) }
+            if (partidaEncontrada == true) {
+                Toast
+                    .makeText(context, "Codigo de sala ya existe, inserte otro, por favor", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                ViewModel.codigoSala.value?.let {
+                    db
+                        .collection("partida")
+                        .document(it)
+                        .set(partidaData)
+                        .addOnSuccessListener {
+                            ViewModel.limpiarCampos()
+                            Toast
+                                .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
+                                .show()
+
+                            ViewModel.limpiarCodigoSala()
+                        }
+                        .addOnFailureListener {
+                            Toast
+                                .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
+                                .show()
+                        }
+            }
+        }
+    }
+    }) {
+        Text(text = "Crear partida")
+    }
+
+}
+
+
+suspend fun buscarPartidaPorCodigo(codigoSala: String): Boolean {
     val db = FirebaseFirestore.getInstance()
+    val coleccion = db.collection("partida")
+    val consulta = coleccion.whereEqualTo("codigo", codigoSala)
 
-    val partidaData = hashMapOf(
-        "partida" to 1,
-        "turno" to 1,
-        "subturno" to 1,
-        "logrosj1" to 0,
-        "logrosj2" to 0,
-        "j1" to jugador1,
-        "j2" to "",
-        "ganador" to "",
-        "codigo" to codigoSala
-    )
-
-    db
-        .collection("partida")
-        .document()
-        .set(partidaData)
-        .addOnSuccessListener {
-            print("Partida creada correctamente")
-        }
-        .addOnFailureListener {
-            print("Partida no creada correctamente")
-        }
+    return try {
+        val documentos = consulta.get().await()
+        !documentos.isEmpty
+    } catch (excepcion: Exception) {
+        false
+    }
 }
 
 @Composable

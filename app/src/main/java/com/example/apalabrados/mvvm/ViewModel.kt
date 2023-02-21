@@ -1,4 +1,4 @@
-package com.example.apalabrados.viewModel
+package com.example.apalabrados.mvvm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -66,6 +66,20 @@ open class ViewModel : ViewModel() {
         _respuesta2.value = ""
         _respuesta3.value = ""
         _respuesta.value = ""
+    }
+
+    /*PARTIDA CRUD MVVM*/
+
+    private val _codigoSala = MutableLiveData<String>()
+    val codigoSala: LiveData<String> = _codigoSala
+
+    fun rellenarCodigoSala(
+        campo: String
+    ){
+        _codigoSala.value = campo
+    }
+    fun limpiarCodigoSala(){
+        _codigoSala.value = ""
     }
 
 }

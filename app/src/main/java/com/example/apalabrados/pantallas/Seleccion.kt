@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirPartida
-import com.example.apalabrados.helpers.generarCodigoSala
+import com.example.apalabrados.conexion.generarCodigo
 import com.example.apalabrados.model.Usuario
 import com.example.apalabrados.navegacion.PantallasApp
 
@@ -17,9 +17,8 @@ fun Seleccion(navController: NavController, viewModel: ViewModel){
 
     Column() {
         Button(onClick = {
-            val codigoSala = generarCodigoSala()
-            aniadirPartida(jugador1 = pepe.nombre, codigoSala)
-            navController.navigate(PantallasApp.CrearPartida.route + "/" + codigoSala)
+            navController.navigate(PantallasApp.CrearPartida.route)
+            //getall()
 
         }) {
             Text(text = "Crear partida")

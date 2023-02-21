@@ -14,7 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.navegacion.PantallasApp
-import com.example.apalabrados.viewModel.ViewModel
+import com.example.apalabrados.mvvm.ViewModel
 
 
 @Composable

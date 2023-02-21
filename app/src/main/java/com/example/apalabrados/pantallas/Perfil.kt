@@ -11,7 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.example.apalabrados.viewModel.ViewModel
+import com.example.apalabrados.mvvm.ViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

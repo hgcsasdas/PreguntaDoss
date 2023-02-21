@@ -1,15 +1,15 @@
 package com.example.apalabrados.model
 
 class Partida(
-    val partida: Int,
-    val turno: Int,
-    val jugador1: Int,
-    val jugador2: Int,
-    val subturno: Int,
-    val logrosJ1: String,
-    val logrosJ2: String,
-    val ganador: String,
-    val codigo: String
+    val codigo: String? = "",
+    val ganador: String? = "",
+    val j1: String? = "",
+    val j2: String? = "",
+    val logrosJ1: Int? = 0,
+    val logrosJ2: Int? = 0,
+    val partida: Int? = 1,
+    val subturno: Int? = 1,
+    val turno: Int? = 1,
 ) {
 
 
