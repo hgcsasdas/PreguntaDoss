@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirPreguntaButton
-import com.example.apalabrados.viewModel.ViewModel
+import com.example.apalabrados.mvvm.ViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.NavegacionApp
 import com.example.apalabrados.ui.theme.ApalabradosTheme
-import com.example.apalabrados.viewModel.ViewModel
+import com.example.apalabrados.mvvm.ViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

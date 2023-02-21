@@ -2,39 +2,35 @@ package com.example.apalabrados.conexion
 
 import android.util.Log
 import com.example.apalabrados.model.Partida
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 
 val db = FirebaseFirestore.getInstance()
 
 fun buscarEnFirebase(codigoBuscado: String): Boolean {
     var existe = false
     val docRef = db.collection("partida")
-    docRef.
-    get()
-        .addOnSuccessListener {
-                queryDocumentSnapshots ->
+    docRef.get()
+        .addOnSuccessListener { queryDocumentSnapshots ->
             if (!queryDocumentSnapshots.isEmpty) {
-                /*Si los datos no están vacíos
-                * añadimos los datos a una lista*/
                 val list = queryDocumentSnapshots.documents
                 for (d in list) {
-                val partida: Partida? = d.toObject(Partida::class.java)
-                if(codigoBuscado == partida?.codigo){
-                    existe = true
-                    println("verdadero")
+                    val partida: Partida? = d.toObject(Partida::class.java)
+                    if (codigoBuscado == partida?.codigo) {
+                        existe = true
+                        println("falso")
+                        break // exit the loop
+                    } else {
+                        existe = false
+                    }
                 }
-            }
-            }else{
-
             }
         }
         .addOnFailureListener { exception ->
-
+            // handle exception
         }
     return existe
 }
-
 fun obtenerNombreJ2(codigo: String, varBuscar: String): String {
     var nombre: String = ""
     print(codigo + "    " + varBuscar)
@@ -71,4 +67,26 @@ fun getall(){
         .addOnFailureListener { exception ->
 
         }
+}
+
+fun generarCodigo(): String {
+    val caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    val longitudCodigo = 4
+    val codigo = StringBuilder()
+    var existe: Boolean
+    do {
+        codigo.clear()
+        for (i in 0 until longitudCodigo) {
+            val aleatorio = (caracteres.indices).random()
+            codigo.append(caracteres[aleatorio])
+        }
+        existe = try {
+            val docRef = db.collection("partida")
+            val querySnapshot = Tasks.await(docRef.whereEqualTo("codigo", codigo.toString()).get())
+            !querySnapshot.isEmpty
+        } catch (e: Exception) {
+            false
+        }
+    } while (existe)
+    return codigo.toString()
 }

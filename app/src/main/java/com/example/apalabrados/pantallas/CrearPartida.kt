@@ -1,50 +1,43 @@
 package com.example.apalabrados.pantallas
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.apalabrados.conexion.buscarJugadorLibre
-import com.example.apalabrados.conexion.obtenerNombreJ2
-import com.example.apalabrados.model.Usuario
+import com.example.apalabrados.conexion.aniadirPartida
+import com.example.apalabrados.mvvm.ViewModel
 
-var jugador = ""
 
 
 @Composable
-fun CrearPartida(navController: NavController, codigoSala: String?){
-    Column {
-        Text(text = jugador)
-        var count by remember { mutableStateOf("asd") }
+fun CrearPartida(navController: NavController, ViewModel: ViewModel){
+// Crearemos una instanacia de partida a lgenerar un nombre de sala que nosotros queramos
+// y tendremos la posibilidad de generar un código aleatorio con un botón
 
-        buscarJugadorLibre("Juanito")
-        codigoSala?.let {
+    val codigoSala by ViewModel.codigoSala.observeAsState(initial = "")
 
-            Spacer(modifier = Modifier.padding(20.dp))
-
-
-            Button(onClick = {
-                count = obtenerNombreJ2(it, "j1")
-            }) {
-                Text(text = "asdasd")
-            }
-        }
-        Spacer(modifier = Modifier.padding(20.dp))
-        Text(text = count)
-        codigoSala?.let {
-            Text(text = it)
-        }
-    }
-}
-
-@Composable
-fun ContenidoCrearPartida(user: Usuario){
-    Column() {
-        Text(text = "Jugador 1= " + user.nombre)
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            value = codigoSala,
+            onValueChange = {
+                ViewModel.rellenarCodigoSala(
+                    campo = it,
+                )
+            },
+            label = { Text("Pregunta") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+        )
+        aniadirPartida("pepe", ViewModel)
     }
 }

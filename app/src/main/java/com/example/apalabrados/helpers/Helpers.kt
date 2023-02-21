@@ -2,7 +2,7 @@ package com.example.apalabrados.helpers
 
 import com.example.apalabrados.conexion.buscarEnFirebase
 
-fun generarCodigo(): String {
+/*fun generarCodigo(): String {
     var noexiste = true
     val caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     val longitudCodigo = 4
@@ -12,7 +12,8 @@ fun generarCodigo(): String {
             val aleatorio = (caracteres.indices).random()
             codigo.append(caracteres[aleatorio])
         }
+        println(codigo.toString())
         noexiste = buscarEnFirebase(codigo.toString())
     }
     return codigo.toString()
-}
+}*/
