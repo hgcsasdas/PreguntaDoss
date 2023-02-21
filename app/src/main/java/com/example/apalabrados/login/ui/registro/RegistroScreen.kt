@@ -1,5 +1,6 @@
 package com.example.apalabrados.login.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,12 +12,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.apalabrados.R
+import com.example.apalabrados.conexion.db
 import com.example.apalabrados.login.ui.registro.RegistroViewModel
 import com.example.apalabrados.ui.theme.AzulFondo
 import kotlinx.coroutines.launch
@@ -43,7 +46,8 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
 
     val email : String by viewModel.email.observeAsState(initial = "")
     val password : String by viewModel.password.observeAsState(initial = "")
-    val loginEnable:Boolean by viewModel.registroEnable.observeAsState(initial = false)
+    val usuario : String by viewModel.usuario.observeAsState(initial = "")
+    val resgistroEnable:Boolean by viewModel.registroEnable.observeAsState(initial = false)
     val isLoadingP: Boolean by viewModel.isLoadingR.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
 
@@ -55,9 +59,11 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
         Column(modifier = modifier) {
             HeaderImageR(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(16.dp))
-            EmailFielR(email) {viewModel.onRegistroChanged(it, password)}
+            UsuarioFielR(usuario) {viewModel.onRegistroChanged(it, email, password)}
             Spacer(modifier = Modifier.padding(4.dp))
-            PasswordFielR(password) {viewModel.onRegistroChanged(email, it)}
+            EmailFielR(email) {viewModel.onRegistroChanged(usuario, it, password)}
+            Spacer(modifier = Modifier.padding(4.dp))
+            PasswordFielR(password) {viewModel.onRegistroChanged(usuario,email, it)}
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPasswordR(Modifier.align(Alignment.End))
             Spacer(modifier = Modifier.padding(16.dp))
@@ -66,22 +72,40 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                RegistroButtonR(loginEnable) {
-                    coroutineScope.launch { viewModel.onRegistroSelected() }
+                RegistroButtonR(resgistroEnable, viewModel)
                 }
             }
 
         }
     }
 
-
-
-}
-
 @Composable
-fun RegistroButtonR(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel) {
+    val dbName = "usuarios"
+    val context = LocalContext.current
     Button(
-        onClick = {onLoginSelected() },
+        onClick = {
+            val dato = hashMapOf(
+                "usuario" to viewModel.usuario.value,
+                "email" to viewModel.email.value,
+                "password" to viewModel.password.value
+            )
+            viewModel.usuario.value?.let {
+                db.collection(dbName)
+                    .document(it)
+                    .set(dato)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_LONG)
+                            .show()
+                        viewModel.limpiarCampos()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "No se ha podido reistrar el usuario", Toast.LENGTH_LONG)
+                            .show()
+                    }
+            }
+
+        },
         modifier = Modifier
             .width(150.dp)
             .height(55.dp),
@@ -132,6 +156,22 @@ fun EmailFielR( email: String, onTextFielChanged:(String) -> Unit ) {
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
+        maxLines = 1,
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color(0xFFCECECE),
+            backgroundColor = Color(0xFF6F6F6F),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        )
+    )
+}
+@Composable
+fun UsuarioFielR( usuario: String, onTextFielChanged:(String) -> Unit ) {
+    TextField(
+        value = usuario, onValueChange = {onTextFielChanged(it)},
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(text = "Usuario") },
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
