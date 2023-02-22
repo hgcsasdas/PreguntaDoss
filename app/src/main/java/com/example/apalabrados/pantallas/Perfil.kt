@@ -25,7 +25,7 @@ fun Perfil(navController: NavController, ViewModel: ViewModel){
     val sessionManager = Session(LocalContext.current)
     var partidas_ganadas = 0
 
-    buscarPartidasGanadasJugador("usuario123") { partidasGanadas ->
+    buscarPartidasGanadasJugador("hgc88a") { partidasGanadas ->
         partidas_ganadas = partidasGanadas
     }
     Scaffold (

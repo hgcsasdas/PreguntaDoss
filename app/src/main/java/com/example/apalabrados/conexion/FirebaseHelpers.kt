@@ -101,6 +101,7 @@ fun buscarPartidasGanadasJugador(user: String, onComplete: (Int) -> Unit) {
     consulta.get().addOnSuccessListener { querySnapshot ->
         val partidasGanadas = querySnapshot.size()
         onComplete(partidasGanadas)
+        println(partidasGanadas)
     }.addOnFailureListener { exception ->
         onComplete(0)
     }
