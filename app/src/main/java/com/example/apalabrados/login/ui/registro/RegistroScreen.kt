@@ -22,7 +22,6 @@ import androidx.navigation.NavController
 import com.example.apalabrados.R
 import com.example.apalabrados.conexion.buscarUsuarioReference
 import com.example.apalabrados.conexion.db
-import com.example.apalabrados.conexion.usuarioEnRegistroYa
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.session.session
 import com.example.apalabrados.ui.theme.AzulFondo

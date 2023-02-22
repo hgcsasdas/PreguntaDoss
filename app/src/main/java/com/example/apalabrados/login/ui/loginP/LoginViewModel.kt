@@ -4,12 +4,13 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.apalabrados.model.Usuario
 import kotlinx.coroutines.delay
 
 class LoginViewModel : ViewModel(){
 
-    private val _email = MutableLiveData<String>()
-    val email : LiveData<String> = _email
+    private val _usuario = MutableLiveData<String>()
+    val usuario : LiveData<String> = _usuario
 
     private val _password = MutableLiveData<String>()
     val password : LiveData<String> = _password
@@ -21,15 +22,15 @@ class LoginViewModel : ViewModel(){
     val isLoading : LiveData<Boolean> = _isLoading
 
 
-    fun onLoginChanged(email: String, password: String) {
+    fun onLoginChanged(usuario: String, password: String) {
 
-        _email.value = email
+        _usuario.value = usuario
         _password.value = password
-        _loginEnable.value = isValidEmail(email) && isValidPassword(password)
+        _loginEnable.value = isValidUsuario(usuario) && isValidPassword(password)
     }
 
     private fun isValidPassword(password: String): Boolean = password.length > 6
-    private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    private fun isValidUsuario(usuario: String): Boolean = usuario.length>=6
 
 
     suspend fun onLoginSelected() {
@@ -37,6 +38,11 @@ class LoginViewModel : ViewModel(){
 
         delay(4000)
         _isLoading.value = false
+    }
+
+    fun limpiarCamposL(){
+        _usuario.value = ""
+        _password.value = ""
     }
 
 }
