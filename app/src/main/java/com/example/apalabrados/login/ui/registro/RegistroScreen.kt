@@ -1,4 +1,4 @@
-package com.example.apalabrados.login.ui
+package com.example.apalabrados.login.ui.registro
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.conexion.buscarUsuarioReference
 import com.example.apalabrados.conexion.db
 import com.example.apalabrados.conexion.usuarioEnRegistroYa
-import com.example.apalabrados.login.ui.registro.RegistroViewModel
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.session.session
 import com.example.apalabrados.ui.theme.AzulFondo
@@ -53,7 +53,6 @@ fun Registro(modifier: Modifier, viewModel: RegistroViewModel, navController: Na
     val usuario : String by viewModel.usuario.observeAsState(initial = "")
     val resgistroEnable:Boolean by viewModel.registroEnable.observeAsState(initial = false)
     val isLoadingP: Boolean by viewModel.isLoadingR.observeAsState(initial = false)
-    val coroutineScope = rememberCoroutineScope()
 
     if(isLoadingP){
         Box(modifier.fillMaxSize()){
@@ -97,7 +96,8 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                 "email" to viewModel.email.value,
                 "password" to viewModel.password.value
             )
-            usuarioEnRegistroYa(viewModel.usuario.value!!, viewModel.email.value!!) { exists ->
+            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
+            buscarUsuarioReference(viewModel.usuario.value!!) { exists ->
                 if (exists) {
                     // El usuario ya existe en la base de datos
                     Toast.makeText(context, "No se ha podido reistrar el usuario, por que ya existe", Toast.LENGTH_LONG)
@@ -105,8 +105,6 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
 
                 } else {
                     // El usuario no existe en la base de datos
-
-
                     viewModel.usuario.value?.let {
                         db.collection(dbName)
                             .document(it)
@@ -119,7 +117,6 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                                 )
                                     .show()
                                 viewModel.limpiarCampos()
-                                sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
                                 sessionManager.loguear()
                                 navController.navigate(PantallasApp.Inicio.route)
                             }
@@ -131,7 +128,6 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                                 )
                                     .show()
                             }
-
                     }
                 }
             }
@@ -150,6 +146,7 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
         Text(text = "Resgistro")
     }
 }
+
 
 @Composable
 fun ForgotPasswordR(modifier: Modifier) {
