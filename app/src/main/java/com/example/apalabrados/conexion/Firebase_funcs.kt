@@ -241,3 +241,7 @@ fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean)
             }
         }
 }
+
+fun cogerDatosSessionUsuario(){
+
+}

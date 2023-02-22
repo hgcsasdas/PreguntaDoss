@@ -20,7 +20,7 @@ import com.example.apalabrados.session.Session
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Perfil(navController: NavController, ViewModel: ViewModel){
+fun Perfil(navController: NavController, ViewModel: ViewModel) {
     val scaffoldState = rememberScaffoldState()
     val sessionManager = Session(LocalContext.current)
     var partidas_ganadas = 0
@@ -28,30 +28,21 @@ fun Perfil(navController: NavController, ViewModel: ViewModel){
     buscarPartidasGanadasJugador("hgc88a") { partidasGanadas ->
         partidas_ganadas = partidasGanadas
     }
-    Scaffold (
+    Scaffold(
         scaffoldState = scaffoldState,
 
-        bottomBar = {BottomBar(navController, ViewModel)}
+        bottomBar = { BottomBar(navController, ViewModel) }
     ) {
-        //content area
-        Box(modifier = Modifier
-            .background(Color(0xff546e7a))
-            .fillMaxSize()){
-            if (sessionManager.isLoggedIn()) {
-                val nick = sessionManager.getNick()
-                val email = sessionManager.getEmail()
-                val password = sessionManager.getPassword()
-                Column() {
-                    Text(text = nick!!)
-                    Text(text = email!!)
-                    Text(text = password!!)
-                    Text(text = "partdas ganadas: $partidas_ganadas")
-                }
-                // hacer algo con los datos de la sesión del usuario
-            } else {
-                // el usuario no ha iniciado sesión, redirigirlo a la pantalla de inicio de sesión
-            }
 
+        //content area
+        if (sessionManager.isLoggedIn()) {
+            val nick = sessionManager.getNick()
+            val email = sessionManager.getEmail()
+            val password = sessionManager.getPassword()
+            ProfileScreen(nick!!, email!!, partidas_ganadas!!)
+            // hacer algo con los datos de la sesión del usuario
+        } else {
+            // el usuario no ha iniciado sesión, redirigirlo a la pantalla de inicio de sesión
         }
     }
 }
