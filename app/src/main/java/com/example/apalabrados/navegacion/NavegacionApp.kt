@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apalabrados.login.ui.LoginScreen
-import com.example.apalabrados.login.ui.RegistroScreen
+import com.example.apalabrados.login.ui.registro.RegistroScreen
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.login.ui.registro.RegistroViewModel
 import com.example.apalabrados.pantallas.*

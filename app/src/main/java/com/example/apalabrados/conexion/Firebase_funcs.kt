@@ -201,18 +201,16 @@ fun buscarJugadorLibre(nombre: String) {
     }
 }
 
-fun usuarioEnRegistroYa(email: String, usuario: String, onComplete: (Boolean) -> Unit) {
+fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
     val db = FirebaseFirestore.getInstance()
     val usersCollection = db.collection("usuarios")
-    val query = usersCollection.whereEqualTo("email", email).whereEqualTo("usuario", usuario)
+    val query = usersCollection.whereEqualTo("usuario", nick)
 
     query.get().addOnSuccessListener { querySnapshot ->
         if (!querySnapshot.isEmpty) {
-            onComplete(true) // El documento ya contiene los datos proporcionados
-            println("pepe")
+            onComplete(true) // El documento ya contiene el nick proporcionado
         } else {
-            onComplete(false) // El documento no contiene los datos proporcionados
-            println("GUarra")
+            onComplete(false) // El documento no contiene el nick proporcionado
         }
     }.addOnFailureListener { exception ->
         onComplete(false) // Error al obtener el documento
