@@ -11,14 +11,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirPartida
 import com.example.apalabrados.mvvm.ViewModel
-import com.example.apalabrados.session.session
+import com.example.apalabrados.session.Session
 
 
 @Composable
 fun CrearPartida(navController: NavController, ViewModel: ViewModel){
 // Crearemos una instanacia de partida a lgenerar un nombre de sala que nosotros queramos
 // y tendremos la posibilidad de generar un código aleatorio con un botón
-    val sessionManager = session(LocalContext.current)
+    val sessionManager = Session(LocalContext.current)
 
     val codigoSala by ViewModel.codigoSala.observeAsState(initial = "")
 

@@ -14,16 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.example.apalabrados.conexion.buscarPartidasGanadasJugador
 import com.example.apalabrados.mvvm.ViewModel
-import com.example.apalabrados.session.session
+import com.example.apalabrados.session.Session
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Perfil(navController: NavController, ViewModel: ViewModel){
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-    val sessionManager = session(LocalContext.current)
+    val sessionManager = Session(LocalContext.current)
+    var partidas_ganadas = 0
 
+    buscarPartidasGanadasJugador("usuario123") { partidasGanadas ->
+        partidas_ganadas = partidasGanadas
+    }
     Scaffold (
         scaffoldState = scaffoldState,
 
@@ -41,6 +45,7 @@ fun Perfil(navController: NavController, ViewModel: ViewModel){
                     Text(text = nick!!)
                     Text(text = email!!)
                     Text(text = password!!)
+                    Text(text = "partdas ganadas: $partidas_ganadas")
                 }
                 // hacer algo con los datos de la sesión del usuario
             } else {

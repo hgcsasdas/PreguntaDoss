@@ -1,9 +1,11 @@
 package com.example.apalabrados.conexion
 
 import android.util.Log
+import androidx.compose.runtime.Composable
 import com.example.apalabrados.model.Partida
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 val db = FirebaseFirestore.getInstance()
 
@@ -46,7 +48,6 @@ fun obtenerNombreJ2(codigo: String, varBuscar: String): String {
     print(nombre + "siuu")
     return nombre
 }
-
 fun getall(){
 
     val docRef = db.collection("partida")
@@ -67,7 +68,6 @@ fun getall(){
 
         }
 }
-
 fun generarCodigo(): String {
     val caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     val longitudCodigo = 4
@@ -88,4 +88,20 @@ fun generarCodigo(): String {
         }
     } while (existe)
     return codigo.toString()
+}
+fun buscarTodasPartidasJugador(){
+
+}
+@Composable
+fun buscarPartidasGanadasJugador(user: String, onComplete: (Int) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    val coleccion = db.collection("partida")
+    val consulta = coleccion.whereEqualTo("ganador", user)
+
+    consulta.get().addOnSuccessListener { querySnapshot ->
+        val partidasGanadas = querySnapshot.size()
+        onComplete(partidasGanadas)
+    }.addOnFailureListener { exception ->
+        onComplete(0)
+    }
 }
