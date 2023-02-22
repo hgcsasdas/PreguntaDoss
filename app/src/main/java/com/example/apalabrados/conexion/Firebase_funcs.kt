@@ -97,6 +97,7 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
     }
 }
 
+//Con esta función se crea una partida
 @Composable
 fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
     val context = LocalContext.current
@@ -151,7 +152,7 @@ fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
 
 }
 
-
+//Se llama a esta función para buscar si está libre ese código
 suspend fun buscarPartidaPorCodigo(codigoSala: String): Boolean {
     val db = FirebaseFirestore.getInstance()
     val coleccion = db.collection("partida")

@@ -3,7 +3,7 @@ package com.example.apalabrados.session
 import android.content.Context
 import android.content.SharedPreferences
 
-class session (context: Context) {
+class Session (context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
     private var logued = false
     fun startSession(nick: String, password: String, email: String) {
