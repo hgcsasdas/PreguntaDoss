@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
 import com.example.apalabrados.conexion.db
+import com.example.apalabrados.conexion.usuarioEnRegistroYa
 import com.example.apalabrados.login.ui.registro.RegistroViewModel
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.session.session
 import com.example.apalabrados.ui.theme.AzulFondo
-import com.google.android.gms.cast.framework.SessionManager
 
 
 @Composable
@@ -97,25 +97,43 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                 "email" to viewModel.email.value,
                 "password" to viewModel.password.value
             )
-            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
+            usuarioEnRegistroYa(viewModel.usuario.value!!, viewModel.email.value!!) { exists ->
+                if (exists) {
+                    // El usuario ya existe en la base de datos
+                    Toast.makeText(context, "No se ha podido reistrar el usuario, por que ya existe", Toast.LENGTH_LONG)
+                        .show()
+
+                } else {
+                    // El usuario no existe en la base de datos
 
 
-            viewModel.usuario.value?.let {
-                db.collection(dbName)
-                    .document(it)
-                    .set(dato)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_LONG)
-                            .show()
-                        viewModel.limpiarCampos()
-                        sessionManager.loguear()
-                        navController.navigate(PantallasApp.Inicio.route)
+                    viewModel.usuario.value?.let {
+                        db.collection(dbName)
+                            .document(it)
+                            .set(dato)
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    context,
+                                    "Usuario registrado correctamente",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                                viewModel.limpiarCampos()
+                                sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
+                                sessionManager.loguear()
+                                navController.navigate(PantallasApp.Inicio.route)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    "No se ha podido reistrar el usuario",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            }
 
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "No se ha podido reistrar el usuario", Toast.LENGTH_LONG)
-                            .show()
-                    }
+                }
             }
 
         },
