@@ -1,5 +1,6 @@
 package com.example.apalabrados.login.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.conexion.verSiExisteUsuario
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.ui.theme.AzulFondo
@@ -43,49 +46,71 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
 
-    val email : String by viewModel.email.observeAsState(initial = "")
-    val password : String by viewModel.password.observeAsState(initial = "")
-    val loginEnable:Boolean by viewModel.loginEnable.observeAsState(initial = false)
+    val usuario: String by viewModel.usuario.observeAsState(initial = "")
+    val password: String by viewModel.password.observeAsState(initial = "")
+    val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
 
-    if(isLoading){
-        Box(modifier.fillMaxSize()){
+    if (isLoading) {
+        Box(modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
-    }else{
+    } else {
         Column(modifier = modifier) {
             HeaderImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(16.dp))
-            EmailFiel(email) {viewModel.onLoginChanged(it, password)}
+            UsuarioFiel(usuario) { viewModel.onLoginChanged(it, password) }
             Spacer(modifier = Modifier.padding(4.dp))
-            PasswordFiel(password) {viewModel.onLoginChanged(email, it)}
+            PasswordFiel(password) { viewModel.onLoginChanged(usuario, it) }
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPassword(Modifier.align(Alignment.End))
             Spacer(modifier = Modifier.padding(16.dp))
-            Row (
+            Row(
                 modifier = Modifier.size(380.dp, 100.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-                    ){
-                LoginButton(loginEnable) {
-                    coroutineScope.launch { viewModel.onLoginSelected() }
-                }
+            ) {
+                LoginButton(loginEnable, viewModel, navController)
                 Spacer(modifier = Modifier.padding(10.dp))
                 RegistroButton(navController)
-            }
 
+            }
         }
     }
-
-
-
 }
 
+
+
 @Composable
-fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+fun LoginButton(loginEnable: Boolean, viewModel:LoginViewModel, navController: NavController) {
+    val context = LocalContext.current
+
     Button(
-        onClick = {onLoginSelected() },
+        onClick ={
+
+            verSiExisteUsuario(viewModel.usuario.value!!, viewModel.password.value!!) {
+                callback ->
+                if (callback){
+                    Toast.makeText(
+                        context,
+                        "Login Correcto",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    viewModel.limpiarCamposL()
+                    navController.navigate(PantallasApp.Inicio.route)
+
+                }else{
+                    Toast.makeText(
+                        context,
+                        "EL usuario o la contraseña son incorrectos",
+                        Toast.LENGTH_LONG
+                    )
+
+                }
+            }
+        },
         modifier = Modifier
             .width(150.dp)
             .height(55.dp),
@@ -150,12 +175,11 @@ fun PasswordFiel(password: String, onTextFielChanged: (String) -> Unit) {
 }
 
 @Composable
-fun EmailFiel( email: String, onTextFielChanged:(String) -> Unit ) {
+fun UsuarioFiel( usuario: String, onTextFielChanged:(String) -> Unit ) {
     TextField(
-        value = email, onValueChange = {onTextFielChanged(it)},
+        value = usuario, onValueChange = {onTextFielChanged(it)},
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Email") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        placeholder = { Text(text = "Usuario") },
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(

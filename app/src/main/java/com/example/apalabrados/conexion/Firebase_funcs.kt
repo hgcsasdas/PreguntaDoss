@@ -217,3 +217,27 @@ fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
         onComplete(false) // Error al obtener el documento
     }
 }
+
+
+fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+
+    // Consulta en la base de datos si existe un usuario con el nombre y la contraseña proporcionados
+    db.collection("usuarios")
+        .whereEqualTo("usuario", usuario)
+        .whereEqualTo("password", contrasenia)
+        .get()
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val result = task.result
+                if (!result?.isEmpty!!) {
+                    callback(true)
+                } else {
+                    // Si no existe un usuario con el nombre y la contraseña proporcionados, devuelve falso
+                    callback(false)
+                }
+            } else {
+                callback(false)
+            }
+        }
+}
