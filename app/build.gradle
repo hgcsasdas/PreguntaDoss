@@ -76,4 +76,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+
+    implementation "androidx.compose.animation:animation-core:1.1.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0"
+
+
+
 }
