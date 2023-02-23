@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
-import com.example.apalabrados.conexion.cogerDatosSessionUsuario
+import com.example.apalabrados.conexion.cogerEmailSessionUsuario
 import com.example.apalabrados.conexion.verSiExisteUsuario
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.PantallasApp
@@ -101,11 +101,21 @@ fun LoginButton(loginEnable: Boolean, viewModel:LoginViewModel, navController: N
                         Toast.LENGTH_LONG
                     ).show()
 
-                    cogerDatosSessionUsuario()
 
-                    sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
-                    viewModel.limpiarCamposL()
-                    navController.navigate(PantallasApp.Inicio.route)
+                    cogerEmailSessionUsuario(viewModel.usuario.value!!) { email ->
+                        if (email != null) {
+                            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, email)
+                            viewModel.limpiarCamposL()
+                            navController.navigate(PantallasApp.Inicio.route)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "No se ha podido obtener el email",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
 
                 }else{
                     Toast.makeText(

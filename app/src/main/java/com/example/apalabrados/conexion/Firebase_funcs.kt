@@ -2,18 +2,23 @@ package com.example.apalabrados.conexion
 
 import android.view.View
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.ui.theme.AzulClarito
+import com.example.apalabrados.ui.theme.AzulFondo
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -86,11 +91,15 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
         println(ViewModel.respuesta.value)
         println(ViewModel.campo.value)
         println("alijdlisajdliajds")
-    }) {
+    },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = AzulClarito,
+            contentColor = AzulFondo
+        )        ) {
         Text(
             text = "Añadir Pregunta",
             fontSize = 26.sp,
-            color = Color.White,
+
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
         )
@@ -146,7 +155,11 @@ fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
             }
         }
     }
-    }) {
+    },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = AzulClarito,
+            contentColor = AzulFondo
+        )) {
         Text(text = "Crear partida")
     }
 
@@ -242,6 +255,32 @@ fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean)
         }
 }
 
-fun cogerDatosSessionUsuario(){
+fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    val coleccion = db.collection("usuarios")
+    val consulta = coleccion.whereEqualTo("usuario", user)
 
+    consulta.get().addOnSuccessListener { querySnapshot ->
+        if (!querySnapshot.isEmpty) {
+            val documento = querySnapshot.documents[0]
+            val email = documento.getString("email")
+            onComplete(email)
+        } else {
+            onComplete(null)
+        }
+    }.addOnFailureListener { exception ->
+        onComplete(null)
+    }
+}
+
+fun getStringFirebase(coleccion: String, keyDato: String, datoProporcionado: String): String{
+    val db = FirebaseFirestore.getInstance()
+    val coleccion = db.collection(coleccion)
+    val consulta = coleccion.whereEqualTo(keyDato, datoProporcionado)
+
+    return try {
+        "sadasd"
+    } catch (excepcion: Exception) {
+        "$excepcion"
+    }
 }

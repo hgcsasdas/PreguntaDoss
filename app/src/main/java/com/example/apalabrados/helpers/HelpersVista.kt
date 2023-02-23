@@ -1,4 +1,4 @@
-package com.example.apalabrados.pantallas
+package com.example.apalabrados.helpers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.ui.theme.AzulClarito
 import com.example.apalabrados.ui.theme.AzulFondo
 
 
@@ -66,48 +67,7 @@ fun BottomBar(navController: NavController, ViewModel: ViewModel) {
             })
     }
 }
-
-@Composable
-fun CartaPerfil(){
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        elevation = 8.dp,
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "Nombre: $",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            )
-            Text(
-                text = "Correo: $",
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            )
-            Text(
-                text= "Partidas ganadas: $",
-                style = MaterialTheme.typography.body1,
-                fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
+//FUNCIÓN VISTA PARA OMSTRAR LOS DATOS DEL PERFIL
 @Composable
 fun ProfileScreen(user: String, email: String, partidasGandas: Int ) {
 
@@ -118,37 +78,39 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int ) {
     ) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(5.dp),
-            backgroundColor = Color.Blue,
+            backgroundColor = AzulClarito,
             elevation = 8.dp
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Profile",
+                    text = "Perfil",
                     style = MaterialTheme.typography.h5,
-                    color = Color.White
+                    color = AzulFondo
                 )
              }
         }
         Card(
             modifier = Modifier.fillMaxWidth().padding(5.dp),
-            backgroundColor = Color.Blue,
+            backgroundColor = AzulClarito,
             elevation = 8.dp
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "Username: $user",
+                    text = "Usuario: $user",
                     style = MaterialTheme.typography.h5,
-                    color = Color.White
+                    color = AzulFondo
                 )
             }
         }
         Card(
             modifier = Modifier.fillMaxWidth().padding(5.dp),
-            backgroundColor = Color.Blue,
+            backgroundColor = AzulClarito,
             elevation = 8.dp
         ) {
             Column(
@@ -157,14 +119,13 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int ) {
                 Text(
                     text = "Email: $email",
                     style = MaterialTheme.typography.h5,
-                    color = Color.White
+                    color = AzulFondo
                 )
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
         Card(
-            modifier = Modifier.fillMaxWidth().padding(15.dp),
-            backgroundColor = Color.Blue,
+            modifier = Modifier.fillMaxWidth().padding(5.dp),
+            backgroundColor = AzulClarito,
             elevation = 8.dp
         ) {
             Column(
@@ -173,9 +134,8 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int ) {
                 Text(
                     text = "Partidas ganadas: $partidasGandas",
                     style = MaterialTheme.typography.h5,
-                    color = Color.White
+                    color = AzulFondo
                 )
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

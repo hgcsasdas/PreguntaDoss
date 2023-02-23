@@ -14,9 +14,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.helpers.BottomBar
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.ui.theme.AzulFondo
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.ui.theme.AzulClarito
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -61,7 +63,7 @@ fun InicioContent(navController: NavController){
                 navController.navigate(PantallasApp.SeleccionMiniJuego.route)
             },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(0xFF00C4F2),
+                    backgroundColor = AzulClarito,
                     contentColor = AzulFondo
                 ),
                 modifier = Modifier.size(160.dp, 60.dp)

@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.buscarPartidasGanadasJugador
+import com.example.apalabrados.helpers.BottomBar
+import com.example.apalabrados.helpers.ProfileScreen
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.session.Session
 
@@ -38,7 +40,6 @@ fun Perfil(navController: NavController, ViewModel: ViewModel) {
         if (sessionManager.isLoggedIn()) {
             val nick = sessionManager.getNick()
             val email = sessionManager.getEmail()
-            val password = sessionManager.getPassword()
             ProfileScreen(nick!!, email!!, partidas_ganadas!!)
             // hacer algo con los datos de la sesión del usuario
         } else {

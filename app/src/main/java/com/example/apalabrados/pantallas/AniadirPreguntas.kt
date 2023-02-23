@@ -14,7 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirPreguntaButton
+import com.example.apalabrados.helpers.BottomBar
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.ui.theme.AzulFondo
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -39,14 +41,11 @@ fun aniadirPreguntasContent(ViewModel: ViewModel) {
     val respuesta2 by ViewModel.respuesta2.observeAsState(initial = "")
     val respuesta3 by ViewModel.respuesta3.observeAsState(initial = "")
 
-    val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                brush = Brush.horizontalGradient(colors = gradientColors),
+                AzulFondo
             ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
