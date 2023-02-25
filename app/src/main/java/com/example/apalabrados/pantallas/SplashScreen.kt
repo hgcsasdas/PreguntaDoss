@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.R
+import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.ui.theme.AzulFondo
 
 @Composable
