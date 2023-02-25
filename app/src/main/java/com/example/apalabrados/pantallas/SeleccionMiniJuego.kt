@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.R
+import com.example.apalabrados.helpers.BottomBar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

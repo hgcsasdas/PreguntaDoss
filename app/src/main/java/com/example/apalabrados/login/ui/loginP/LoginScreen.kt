@@ -20,9 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.conexion.cogerEmailSessionUsuario
 import com.example.apalabrados.conexion.verSiExisteUsuario
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
 import com.example.apalabrados.navegacion.PantallasApp
+import com.example.apalabrados.session.Session
 import com.example.apalabrados.ui.theme.AzulFondo
 import kotlinx.coroutines.launch
 
@@ -88,6 +90,7 @@ fun LoginButton(loginEnable: Boolean, viewModel:LoginViewModel, navController: N
 
     Button(
         onClick ={
+            val sessionManager = Session(context)
 
             verSiExisteUsuario(viewModel.usuario.value!!, viewModel.password.value!!) {
                 callback ->
@@ -96,10 +99,23 @@ fun LoginButton(loginEnable: Boolean, viewModel:LoginViewModel, navController: N
                         context,
                         "Login Correcto",
                         Toast.LENGTH_LONG
-                    )
-                        .show()
-                    viewModel.limpiarCamposL()
-                    navController.navigate(PantallasApp.Inicio.route)
+                    ).show()
+
+
+                    cogerEmailSessionUsuario(viewModel.usuario.value!!) { email ->
+                        if (email != null) {
+                            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, email)
+                            viewModel.limpiarCamposL()
+                            navController.navigate(PantallasApp.Inicio.route)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "No se ha podido obtener el email",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
 
                 }else{
                     Toast.makeText(
