@@ -89,9 +89,6 @@ fun generarCodigo(): String {
     } while (existe)
     return codigo.toString()
 }
-fun buscarTodasPartidasJugador(){
-
-}
 @Composable
 fun buscarPartidasGanadasJugador(user: String, onComplete: (Int) -> Unit) {
     val db = FirebaseFirestore.getInstance()

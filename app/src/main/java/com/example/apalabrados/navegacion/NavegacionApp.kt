@@ -1,11 +1,12 @@
 package com.example.apalabrados.navegacion
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.apalabrados.jugar.pantallasJugar.Roulette
-import com.example.apalabrados.jugar.pantallasJugar.rotateCycles
+import androidx.navigation.navArgument
+import com.example.apalabrados.jugar.pantallasJugar.*
 import com.example.apalabrados.login.ui.LoginScreen
 import com.example.apalabrados.login.ui.registro.RegistroScreen
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
@@ -82,18 +83,40 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
         }
         composable(route= PantallasApp.UnirsePartida.route){
             UnirsePartida(
-
+                navController,
+                ViewModel
             )
         }
         composable(route= PantallasApp.MisPartidas.route){
             MisPartidas(
-
+                navController,
+                ViewModel
             )
         }
         composable(route= PantallasJugar.RuleScreen.route){
             Roulette(
                 navController,
                 ViewModel
+            )
+        }
+        composable(route= PantallasJugar.SalaDeEspera.route+ "/{codigoSala}",
+            arguments = listOf(navArgument(name = "codigoSala"){
+                type = NavType.StringType
+            })){
+            SalaDeEspera(
+                navController,
+                ViewModel,
+                it.arguments?.getString("codigoSala")
+            )
+        }
+        composable(route= PantallasJugar.GanadorScreen.route+ "/{nombreGanador}",
+            arguments = listOf(navArgument(name = "nombreGanador"){
+                type = NavType.StringType
+            })){
+                GanadorScreen(
+                navController,
+                ViewModel,
+                it.arguments?.getString("nombreGanador")
             )
         }
     }

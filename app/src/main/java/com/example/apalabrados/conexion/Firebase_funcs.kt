@@ -1,8 +1,9 @@
 package com.example.apalabrados.conexion
 
-import android.view.View
+
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -10,16 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.apalabrados.model.Partida
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.navegacion.PantallasJugar
+import com.example.apalabrados.session.Session
 import com.example.apalabrados.ui.theme.AzulClarito
 import com.example.apalabrados.ui.theme.AzulFondo
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,8 +33,6 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun aniadirPreguntaButton(ViewModel: ViewModel){
     val context = LocalContext.current
-
-    val db = FirebaseFirestore.getInstance()
 
     val campo by ViewModel.campo.observeAsState(initial = "")
     val respuesta by ViewModel.respuesta.observeAsState(initial = "")
@@ -108,13 +111,10 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
 
 //Con esta función se crea una partida
 @Composable
-fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
+fun aniadirPartida(jugador1: String, ViewModel: ViewModel, navController: NavController){
     val context = LocalContext.current
 
     Button(onClick = {
-
-        val db = FirebaseFirestore.getInstance()
-
         val partidaData = hashMapOf(
             "partida" to 1,
             "turno" to 1,
@@ -144,7 +144,7 @@ fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
                             Toast
                                 .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
                                 .show()
-
+                                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSala.value)
                             ViewModel.limpiarCodigoSala()
                         }
                         .addOnFailureListener {
@@ -167,7 +167,6 @@ fun aniadirPartida(jugador1: String, ViewModel: ViewModel){
 
 //Se llama a esta función para buscar si está libre ese código
 suspend fun buscarPartidaPorCodigo(codigoSala: String): Boolean {
-    val db = FirebaseFirestore.getInstance()
     val coleccion = db.collection("partida")
     val consulta = coleccion.whereEqualTo("codigo", codigoSala)
 
@@ -178,10 +177,9 @@ suspend fun buscarPartidaPorCodigo(codigoSala: String): Boolean {
         false
     }
 }
-
+/*
 @Composable
 fun buscarJugadorLibre(nombre: String) {
-    val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -213,10 +211,31 @@ fun buscarJugadorLibre(nombre: String) {
                 .show()
         }
     }
+}*/
+
+suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, navController: NavController, codigoSala: String){
+    val coleccion = db.collection("partida")
+    val query = coleccion.whereEqualTo("codigo", codigoSala)
+
+    val userj2 = buscarJugadorPartida(codigoSala, "j2")
+
+    if (userj2!!.isEmpty()){
+
+        query.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                val partidaId = document.id
+                val partida = document.toObject(Partida::class.java)
+                partida.j2 = user
+                coleccion.document(partidaId).set(partida)
+                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
+                ViewModel.limpiarCodigoSalaUnirse()
+            }
+        }.addOnFailureListener { exception ->
+            Log.w(TAG, "Error al obtener las partidas", exception)
+        }    }
 }
 
 fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
     val usersCollection = db.collection("usuarios")
     val query = usersCollection.whereEqualTo("usuario", nick)
 
@@ -233,8 +252,6 @@ fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
 
 
 fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-
     // Consulta en la base de datos si existe un usuario con el nombre y la contraseña proporcionados
     db.collection("usuarios")
         .whereEqualTo("usuario", usuario)
@@ -256,7 +273,6 @@ fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean)
 }
 
 fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
     val coleccion = db.collection("usuarios")
     val consulta = coleccion.whereEqualTo("usuario", user)
 
@@ -269,18 +285,74 @@ fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
             onComplete(null)
         }
     }.addOnFailureListener { exception ->
+        println(exception)
         onComplete(null)
     }
 }
 
-fun getStringFirebase(coleccion: String, keyDato: String, datoProporcionado: String): String{
-    val db = FirebaseFirestore.getInstance()
-    val coleccion = db.collection(coleccion)
-    val consulta = coleccion.whereEqualTo(keyDato, datoProporcionado)
+suspend fun buscarJugadorPartida(codigoSala: String, posicion: String): String? {
+    val querySnapshot = db.collection("partida")
+        .whereEqualTo("codigo", codigoSala)
+        .get()
+        .await()
 
-    return try {
-        "sadasd"
-    } catch (excepcion: Exception) {
-        "$excepcion"
+    if (querySnapshot.documents.isNotEmpty()) {
+        val document = querySnapshot.documents[0]
+        return document.getString(posicion).toString()
     }
+
+    return null
+}
+
+suspend fun buscarTurnoOSubturno(codigoSala: String, turnoOsubturno: String): Int? {
+    val querySnapshot = db.collection("partida")
+        .whereEqualTo("codigo", codigoSala)
+        .get()
+        .await()
+
+    if (querySnapshot.documents.isNotEmpty()) {
+        val document = querySnapshot.documents[0]
+        return document.getLong(turnoOsubturno)?.toInt()
+    }
+
+    return null
+}
+
+suspend fun consultarGanador(codigoSala: String, logrosJugador: String): Int? {
+    val querySnapshot = db.collection("partida")
+        .whereEqualTo("codigo", codigoSala)
+        .get()
+        .await()
+
+    if (querySnapshot.documents.isNotEmpty()) {
+        val document = querySnapshot.documents[0]
+        println("asjdyhgasjydgasjydgaygsd   " +  document.getLong(logrosJugador)?.toInt())
+        return document.getLong(logrosJugador)?.toInt()
+    }
+
+    return null
+}
+
+fun buscarPartidasUsuario(sessionManager: Session): Task<MutableList<Partida>> {
+
+    val j1Query = db.collection("partida").whereEqualTo("j1", sessionManager.getNick())
+    val j2Query = db.collection("partida").whereEqualTo("j2", sessionManager.getNick())
+
+    val partidas = mutableListOf<Partida>()
+
+    val task = Tasks.whenAllSuccess<QuerySnapshot>(j1Query.get(), j2Query.get())
+        .addOnSuccessListener { querySnapshots ->
+            for (querySnapshot in querySnapshots) {
+                for (document in querySnapshot) {
+                    val c: Partida? = document.toObject(Partida::class.java)
+                    if (c?.ganador == ""){
+                        c?.let { partidas.add(it) }
+                    }
+                }
+            }
+        }.continueWith {
+            partidas
+        }
+
+    return task
 }
