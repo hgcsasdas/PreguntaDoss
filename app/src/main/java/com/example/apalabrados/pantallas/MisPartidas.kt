@@ -52,7 +52,9 @@ fun MisPartidas(navController: NavController, viewModel: ViewModel){
 
         MostrarPartidas(listaPartidas = ListaPartidas.toMutableStateList(), navController)
     }
-}@SuppressLint("SuspiciousIndentation")
+}
+
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: NavController){
@@ -116,7 +118,7 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
 
                         listaPartidas[index]?.j1?.let {
                             Text(
-                                text = "Raza = $it",
+                                text = "Jugador 1 = $it",
 
                                 modifier = Modifier.padding(4.dp),
 
@@ -132,7 +134,7 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
 
                         listaPartidas[index]?.j2?.let {
                             Text(
-                                text = "Color = $it",
+                                text = "Jugador 2 = $it",
 
                                 modifier = Modifier.padding(4.dp),
 
@@ -144,9 +146,9 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
 
                         Spacer(modifier = Modifier.width(5.dp))
 
-                        listaPartidas[index]?.turno?.let {
+                        listaPartidas[index]?.subturno?.let {
                             Text(
-                                text = "Peso = $it",
+                                text = "Turno = $it",
                                 modifier = Modifier.padding(4.dp),
                                 color = Color.White,
                                 textAlign = TextAlign.Center,

@@ -33,7 +33,6 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
     val jugador1 by ViewModel.jugador1.observeAsState()
     val jugador2 by ViewModel.jugador2.observeAsState()
     val subturno by ViewModel.subturno.observeAsState()
-    val turno by ViewModel.turno.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -45,7 +44,6 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                 jugador1 = buscarJugadorPartida(codigoSala, "j1").toString(),
                 jugador2 = buscarJugadorPartida(codigoSala, "j2").toString(),
                 subturno = buscarTurnoOSubturno(codigoSala, "subturno")!!,
-                turno = buscarTurnoOSubturno(codigoSala, "turno")!!
             )
 
             if (consultarGanador(codigoSala, "logrosj1") == 3){
@@ -73,7 +71,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
         ) {
             Text(text = "Sala: $codigoSala")
 
-            Text(text = "Turno: $turno")
+            Text(text = "Turno: $subturno")
 
 
 
@@ -90,6 +88,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                     Text(text = "Turno jugador 1")
 
                     Button(onClick = {
+                        navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
 
                     },
                         colors = ButtonDefaults.buttonColors(
@@ -104,6 +103,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                     Text(text = "Turno jugador 2")
 
                     Button(onClick = {
+                        navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
 
                     },
                         colors = ButtonDefaults.buttonColors(

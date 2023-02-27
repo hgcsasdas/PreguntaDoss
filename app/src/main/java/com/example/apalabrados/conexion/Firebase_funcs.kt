@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.model.Partida
+import com.example.apalabrados.model.Pregunta
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.session.Session
@@ -235,6 +236,8 @@ suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, nav
         }    }
 }
 
+
+
 fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
     val usersCollection = db.collection("usuarios")
     val query = usersCollection.whereEqualTo("usuario", nick)
@@ -353,6 +356,22 @@ fun buscarPartidasUsuario(sessionManager: Session): Task<MutableList<Partida>> {
         }.continueWith {
             partidas
         }
+
+    return task
+}
+fun buscarPreguntas(tema: String): Task<MutableList<Pregunta>> {
+    val preguntas = mutableListOf<Pregunta>()
+    val query = db.collection(tema)
+
+    val task = query.get().addOnSuccessListener { result ->
+        for (document in result) {
+            val pregunta: Pregunta? = document.toObject(Pregunta::class.java)
+            pregunta?.let { preguntas.add(it) }
+            println(pregunta?.respuesta2)
+        }
+    }.continueWith { task ->
+        preguntas
+    }
 
     return task
 }

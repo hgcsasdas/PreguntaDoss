@@ -104,20 +104,15 @@ open class ViewModel : ViewModel() {
 
     private val _subturno = MutableLiveData<Int>()
     val subturno: LiveData<Int> = _subturno
-    private val _turno = MutableLiveData<Int>()
-    val turno: LiveData<Int> = _turno
 
     fun rellenarDatosSalaDeEspera(
         jugador1: String,
         jugador2: String,
         subturno: Int,
-        turno:Int
-
     ){
         _jugador1.value = jugador1
         _jugador2.value = jugador2
         _subturno.value = subturno
-        _turno.value = turno
 
 
     }

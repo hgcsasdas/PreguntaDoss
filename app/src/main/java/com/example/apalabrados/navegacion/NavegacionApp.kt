@@ -93,10 +93,14 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
-        composable(route= PantallasJugar.RuleScreen.route){
+        composable(route= PantallasJugar.RuleScreen.route + "/{codigoSala}",
+            arguments = listOf(navArgument(name = "codigoSala"){
+                type = NavType.StringType
+            })){
             Roulette(
                 navController,
-                ViewModel
+                ViewModel,
+                it.arguments?.getString("codigoSala")
             )
         }
         composable(route= PantallasJugar.SalaDeEspera.route+ "/{codigoSala}",
@@ -108,6 +112,22 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel,
                 it.arguments?.getString("codigoSala")
             )
+        }
+        composable(route= PantallasJugar.JugarScreen.route+ "/{codigoSala}"+ "/{tema}",arguments = listOf(
+            navArgument(name = "codigoSala") {
+                type = NavType.StringType
+            },
+            navArgument(name = "tema") {
+                type = NavType.StringType
+            }
+        )) { backStackEntry ->
+            JugarScreen(
+                navController,
+                ViewModel,
+                backStackEntry.arguments?.getString("codigoSala"),
+                backStackEntry.arguments?.getString("tema")
+            )
+
         }
         composable(route= PantallasJugar.GanadorScreen.route+ "/{nombreGanador}",
             arguments = listOf(navArgument(name = "nombreGanador"){

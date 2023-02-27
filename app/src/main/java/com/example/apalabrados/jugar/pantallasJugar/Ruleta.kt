@@ -56,7 +56,7 @@ suspend fun rotateCycles(
 }
 
 @Composable
-fun Roulette(navController: NavHostController, ViewModel: ViewModel) {
+fun Roulette(navController: NavHostController, ViewModel: ViewModel, codigoSala: String?) {
     var spin = false
     var flag by rememberSaveable {
         mutableStateOf(spin)
@@ -82,8 +82,6 @@ fun Roulette(navController: NavHostController, ViewModel: ViewModel) {
                 }
 
             }
-
-
         }
 
 
