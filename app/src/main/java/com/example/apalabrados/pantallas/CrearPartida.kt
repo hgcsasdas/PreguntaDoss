@@ -53,7 +53,7 @@ fun CrearPartida(navController: NavController, ViewModel: ViewModel){
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
-            aniadirPartida(sessionManager.getNick().toString(), ViewModel)
+            aniadirPartida(sessionManager.getNick().toString(), ViewModel, navController)
         }
     }
 }

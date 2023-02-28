@@ -1,11 +1,12 @@
 package com.example.apalabrados.navegacion
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.apalabrados.jugar.pantallasJugar.Roulette
-import com.example.apalabrados.jugar.pantallasJugar.RouletteScreen
+import androidx.navigation.navArgument
+import com.example.apalabrados.jugar.pantallasJugar.*
 import com.example.apalabrados.login.ui.LoginScreen
 import com.example.apalabrados.login.ui.registro.RegistroScreen
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
@@ -82,18 +83,65 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
         }
         composable(route= PantallasApp.UnirsePartida.route){
             UnirsePartida(
-
+                navController,
+                ViewModel
             )
         }
         composable(route= PantallasApp.MisPartidas.route){
             MisPartidas(
-
-            )
-        }
-        composable(route= PantallasJugar.RuleScreen.route){
-            RouletteScreen(
                 navController,
                 ViewModel
+            )
+        }
+        composable(route= PantallasJugar.RuleScreen.route + "/{codigoSala}",
+            arguments = listOf(navArgument(name = "codigoSala"){
+                type = NavType.StringType
+            })){
+            Roulette(
+                navController,
+                ViewModel,
+                it.arguments?.getString("codigoSala")
+            )
+        }
+        composable(route= PantallasJugar.SalaDeEspera.route+ "/{codigoSala}",
+            arguments = listOf(navArgument(name = "codigoSala"){
+                type = NavType.StringType
+            })){
+            SalaDeEspera(
+                navController,
+                ViewModel,
+                it.arguments?.getString("codigoSala")
+            )
+        }
+        composable(route= PantallasJugar.JugarScreen.route+ "/{codigoSala}"+ "/{tema}" + "/{jugador}",arguments = listOf(
+            navArgument(name = "codigoSala") {
+                type = NavType.StringType
+            },
+            navArgument(name = "tema") {
+                type = NavType.StringType
+            },
+            navArgument(name = "jugador") {
+                type = NavType.StringType
+            }
+        )) { backStackEntry ->
+            JugarScreen(
+                navController,
+                ViewModel,
+                backStackEntry.arguments?.getString("codigoSala"),
+                backStackEntry.arguments?.getString("tema"),
+                backStackEntry.arguments?.getString("jugador")
+
+            )
+
+        }
+        composable(route= PantallasJugar.GanadorScreen.route+ "/{nombreGanador}",
+            arguments = listOf(navArgument(name = "nombreGanador"){
+                type = NavType.StringType
+            })){
+                GanadorScreen(
+                navController,
+                ViewModel,
+                it.arguments?.getString("nombreGanador")
             )
         }
     }

@@ -1,19 +1,15 @@
 package com.example.apalabrados.helpers
 
-import com.example.apalabrados.conexion.buscarEnFirebase
+import com.example.apalabrados.model.Pregunta
 
-/*fun generarCodigo(): String {
-    var noexiste = true
-    val caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    val longitudCodigo = 4
-    val codigo = StringBuilder()
-    while (noexiste) {
-        for (i in 0 until longitudCodigo) {
-            val aleatorio = (caracteres.indices).random()
-            codigo.append(caracteres[aleatorio])
-        }
-        println(codigo.toString())
-        noexiste = buscarEnFirebase(codigo.toString())
-    }
-    return codigo.toString()
-}*/
+
+fun elegirTresPreguntasAleatorias(preguntas: List<Pregunta>): List<Pregunta> {
+    // Verificar que hay al menos 3 preguntas en la lista
+    require(preguntas.size >= 3) { "La lista debe contener al menos 3 preguntas" }
+
+    // Barajar aleatoriamente las preguntas
+    val preguntasBarajadas = preguntas.shuffled()
+
+    // Tomar las primeras tres preguntas barajadas
+    return preguntasBarajadas.take(3)
+}

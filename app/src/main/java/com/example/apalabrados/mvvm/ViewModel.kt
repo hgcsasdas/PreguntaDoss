@@ -81,5 +81,40 @@ open class ViewModel : ViewModel() {
     fun limpiarCodigoSala(){
         _codigoSala.value = ""
     }
+    /* UNIRSE CON CODIGO MVVM*/
+
+    private val _codigoSalaUnirse = MutableLiveData<String>()
+    val codigoSalaUnirse: LiveData<String> = _codigoSalaUnirse
+
+    fun rellenarCodigoSalaUnirse(
+        campo: String
+    ){
+        _codigoSalaUnirse.value = campo
+    }
+    fun limpiarCodigoSalaUnirse(){
+        _codigoSalaUnirse.value = ""
+    }
+
+    /* SALA DE ESPERA MVVM */
+
+    private val _jugador1 = MutableLiveData<String>()
+    val jugador1: LiveData<String> = _jugador1
+    private val _jugador2 = MutableLiveData<String>()
+    val jugador2: LiveData<String> = _jugador2
+
+    private val _subturno = MutableLiveData<Int>()
+    val subturno: LiveData<Int> = _subturno
+
+    fun rellenarDatosSalaDeEspera(
+        jugador1: String,
+        jugador2: String,
+        subturno: Int,
+    ){
+        _jugador1.value = jugador1
+        _jugador2.value = jugador2
+        _subturno.value = subturno
+
+
+    }
 
 }
