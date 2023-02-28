@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apalabrados.jugar.pantallasJugar.Roulette
-import com.example.apalabrados.jugar.pantallasJugar.rotateCycles
+import com.example.apalabrados.jugar.pantallasJugar.RouletteScreen
 import com.example.apalabrados.login.ui.LoginScreen
 import com.example.apalabrados.login.ui.registro.RegistroScreen
 import com.example.apalabrados.login.ui.loginP.LoginViewModel
@@ -91,7 +91,7 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
             )
         }
         composable(route= PantallasJugar.RuleScreen.route){
-            Roulette(
+            RouletteScreen(
                 navController,
                 ViewModel
             )
