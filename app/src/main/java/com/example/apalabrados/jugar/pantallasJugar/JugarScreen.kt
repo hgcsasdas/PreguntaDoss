@@ -13,7 +13,7 @@ import com.example.apalabrados.session.Session
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun JugarScreen(navController: NavController, ViewModel: ViewModel, codigoSala: String?, tema: String?){
+fun JugarScreen(navController: NavController, ViewModel: ViewModel, codigoSala: String?, tema: String?, jugador: String?){
     val scaffoldState = rememberScaffoldState()
     val sessionManager = Session(LocalContext.current)
     Scaffold(
@@ -22,8 +22,10 @@ fun JugarScreen(navController: NavController, ViewModel: ViewModel, codigoSala: 
         bottomBar = { BottomBar(navController, ViewModel) }
     ) {
 
+        JugarScreenLogica(navController, ViewModel, codigoSala!!, tema!!, jugador!!)
+
         if (sessionManager.isLoggedIn() ){
-            JugarScreenLogica(navController, ViewModel, sessionManager , codigoSala!!, tema!!)
+
         }
     }
 }

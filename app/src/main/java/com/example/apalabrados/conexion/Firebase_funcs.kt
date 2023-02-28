@@ -67,9 +67,18 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
                 .show()
         } else if (respuesta.isEmpty()) {
             Toast
-                .makeText(context, "Respuesta corercta en blanco", Toast.LENGTH_LONG)
+                .makeText(context, "Respuesta correcta en blanco", Toast.LENGTH_LONG)
                 .show()
         }else {
+            var correcta = ""
+            if (respuesta == "respuesta1"){
+                correcta = respuesta1
+            } else if(respuesta == "respuesta2"){
+                correcta = respuesta2
+            } else if(respuesta == "respuesta3"){
+                correcta = respuesta3
+            }
+
             db
                 .collection(campo)
                 .document()
@@ -78,7 +87,7 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
                     "respuesta1" to respuesta1,
                     "respuesta2" to respuesta2,
                     "respuesta3" to respuesta3,
-                    "correcta" to respuesta
+                    "correcta" to  correcta
                 ))
                 .addOnSuccessListener {
                     ViewModel.limpiarCampos()
@@ -235,9 +244,6 @@ suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, nav
             Log.w(TAG, "Error al obtener las partidas", exception)
         }    }
 }
-
-
-
 fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
     val usersCollection = db.collection("usuarios")
     val query = usersCollection.whereEqualTo("usuario", nick)
@@ -252,8 +258,6 @@ fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
         onComplete(false) // Error al obtener el documento
     }
 }
-
-
 fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean) -> Unit) {
     // Consulta en la base de datos si existe un usuario con el nombre y la contraseña proporcionados
     db.collection("usuarios")
@@ -274,7 +278,6 @@ fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean)
             }
         }
 }
-
 fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
     val coleccion = db.collection("usuarios")
     val consulta = coleccion.whereEqualTo("usuario", user)
@@ -292,7 +295,6 @@ fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
         onComplete(null)
     }
 }
-
 suspend fun buscarJugadorPartida(codigoSala: String, posicion: String): String? {
     val querySnapshot = db.collection("partida")
         .whereEqualTo("codigo", codigoSala)
@@ -329,7 +331,6 @@ suspend fun consultarGanador(codigoSala: String, logrosJugador: String): Int? {
 
     if (querySnapshot.documents.isNotEmpty()) {
         val document = querySnapshot.documents[0]
-        println("asjdyhgasjydgasjydgaygsd   " +  document.getLong(logrosJugador)?.toInt())
         return document.getLong(logrosJugador)?.toInt()
     }
 
@@ -374,4 +375,32 @@ fun buscarPreguntas(tema: String): Task<MutableList<Pregunta>> {
     }
 
     return task
+}
+
+fun jugadorAcerto(codigoSala: String, jugador: String) {
+    // Obtener la referencia al documento de la partida
+    val partidaRef = db.collection("partida").document(codigoSala)
+
+    // Actualizar el campo correspondiente
+    partidaRef.get().addOnSuccessListener { documentSnapshot ->
+        val logrosJ1 = documentSnapshot.getLong("logrosJ1") ?: 0
+        val logrosJ2 = documentSnapshot.getLong("logrosJ2") ?: 0
+
+        if (jugador == "j1") {
+            partidaRef.update("logrosJ1", logrosJ1 + 1)
+        } else if (jugador == "j2") {
+            partidaRef.update("logrosJ2", logrosJ2 + 1)
+        }
+    }
+}
+
+fun jugadorFallo(codigoSala: String){
+    val partidaRef = db.collection("partida").document(codigoSala)
+
+    // Actualizar el campo correspondiente
+    partidaRef.get().addOnSuccessListener { documentSnapshot ->
+        val subturno = documentSnapshot.getLong("subturno") ?: 0
+        partidaRef.update("subturno", subturno + 1)
+
+    }
 }

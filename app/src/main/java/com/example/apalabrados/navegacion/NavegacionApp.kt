@@ -113,11 +113,14 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 it.arguments?.getString("codigoSala")
             )
         }
-        composable(route= PantallasJugar.JugarScreen.route+ "/{codigoSala}"+ "/{tema}",arguments = listOf(
+        composable(route= PantallasJugar.JugarScreen.route+ "/{codigoSala}"+ "/{tema}" + "/{jugador}",arguments = listOf(
             navArgument(name = "codigoSala") {
                 type = NavType.StringType
             },
             navArgument(name = "tema") {
+                type = NavType.StringType
+            },
+            navArgument(name = "jugador") {
                 type = NavType.StringType
             }
         )) { backStackEntry ->
@@ -125,7 +128,9 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 navController,
                 ViewModel,
                 backStackEntry.arguments?.getString("codigoSala"),
-                backStackEntry.arguments?.getString("tema")
+                backStackEntry.arguments?.getString("tema"),
+                backStackEntry.arguments?.getString("jugador")
+
             )
 
         }
