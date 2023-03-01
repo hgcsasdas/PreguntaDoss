@@ -67,11 +67,7 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
     val scope = rememberCoroutineScope()
     var tema by remember { mutableStateOf("") } // Actualizar con un estado mutable
     val shouldNavigateToNextScreen = remember { mutableStateOf(false) }
-    Image(
-        painter = painterResource(R.drawable.rulee2),
-        contentDescription = "",
-        modifier = Modifier
-    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
