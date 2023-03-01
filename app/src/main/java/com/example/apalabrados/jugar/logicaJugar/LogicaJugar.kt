@@ -88,7 +88,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                     Text(text = "Turno jugador 1")
 
                     Button(onClick = {
-                        navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
+                        navController.navigate(route = PantallasJugar.RuleScreen.route + "/" +ViewModel.codigoSalaUnirse.value + "/j1")
 
                     },
                         colors = ButtonDefaults.buttonColors(
@@ -103,7 +103,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                     Text(text = "Turno jugador 2")
 
                     Button(onClick = {
-                        navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
+                        navController.navigate(route = PantallasJugar.RuleScreen.route + "/" +ViewModel.codigoSalaUnirse.value + "/j2")
 
                     },
                         colors = ButtonDefaults.buttonColors(

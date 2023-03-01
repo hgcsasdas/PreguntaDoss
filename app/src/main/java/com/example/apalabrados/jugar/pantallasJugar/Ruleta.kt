@@ -5,28 +5,26 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.apalabrados.R
+import com.example.apalabrados.helpers.BottomBar
 import com.example.apalabrados.mvvm.ViewModel
-import com.example.apalabrados.pantallas.BottomBar
-import com.example.apalabrados.pantallas.aniadirPreguntasContent
+import com.example.apalabrados.navegacion.PantallasJugar
+import com.example.apalabrados.ui.theme.AzulFondo
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -58,17 +56,26 @@ suspend fun rotatePartial(
         }
     }
 }
+
 @Composable
-fun Roulette(navController: NavController, ViewModel: ViewModel) {
+fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: String?, jugador: String?) {
     var spin = false
     var flag by rememberSaveable {
         mutableStateOf(spin)
     }
     val rotation = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
-
+    var tema by remember { mutableStateOf("") } // Actualizar con un estado mutable
+    val shouldNavigateToNextScreen = remember { mutableStateOf(false) }
+    Image(
+        painter = painterResource(R.drawable.rulee2),
+        contentDescription = "",
+        modifier = Modifier
+    )
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AzulFondo),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -83,34 +90,37 @@ fun Roulette(navController: NavController, ViewModel: ViewModel) {
                         flag = !flag
                         val randomRotation: Int = Random.nextInt(100, 300)
                         val rotationAngle = randomRotation * 45f
-                        println("Ha salido" + randomRotation)
 
                         rotatePartial(rotationAngle, rotation)
                         flag = !flag
-                        println("HA SALIDOOOOOOOOOOOOO" + rotationAngle)
+
+                        tema = getResult(rotationAngle % 360)
+                        shouldNavigateToNextScreen.value = true
                     }
 
                 }
             }
 
         Image(
-            painter = painterResource(R.drawable.ruletaa),
+            painter = painterResource(R.drawable.rulee2),
             contentDescription = "",
             modifier = modifier
         )
+    }
 
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .padding(top = 16.dp)
-        ) {
-            Text(text = "Aceptar")
+    // Utilizar el estado mutable para la variable tema
+    LaunchedEffect(shouldNavigateToNextScreen.value) {
+        if (shouldNavigateToNextScreen.value && tema.isNotEmpty()) { // Asegurarse de que tema no sea una cadena vacía
+            delay(2000)
+            println(tema)
+            navController.navigate(PantallasJugar.JugarScreen.route + "/$codigoSala" + "/$tema"+ "/$jugador")
         }
     }
 }
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun RouletteScreen(navController: NavController, ViewModel: ViewModel){
+fun RouletteScreen(navController: NavController, ViewModel: ViewModel, codigoSala: String?, jugador:String?){
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -118,6 +128,24 @@ fun RouletteScreen(navController: NavController, ViewModel: ViewModel){
         scaffoldState = scaffoldState,
         bottomBar = { BottomBar(navController, ViewModel) }
     ) {
-        Roulette(navController, ViewModel)
+        Roulette(navController, ViewModel,codigoSala, jugador)
     }
 }
+
+
+fun getResult(angle: Float): String {
+    println(angle%360)
+    return when (angle % 360) {
+        in 0f..89f -> "JavaScript"
+        in 90f..179f -> "CSS"
+        in 180f..269f -> "HTML"
+        in 270f..359f -> "Java"
+        else -> ""
+    }
+}
+
+@Composable
+fun showResult(tema: String) {
+    println(tema)
+}
+
