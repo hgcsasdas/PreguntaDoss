@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -23,6 +24,7 @@ import com.example.apalabrados.R
 import com.example.apalabrados.helpers.BottomBar
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.navegacion.PantallasJugar
+import com.example.apalabrados.ui.theme.AzulClarito
 import com.example.apalabrados.ui.theme.AzulFondo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -71,7 +73,9 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AzulFondo),
+            .background(AzulFondo)
+            .border(2.dp, AzulClarito),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -96,7 +100,14 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
 
                 }
             }
+        Image(
+            painter = painterResource(R.drawable.flecha),
+            contentDescription = "",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(start = 10.dp)
 
+        )
         Image(
             painter = painterResource(R.drawable.rulee2),
             contentDescription = "",
