@@ -20,7 +20,7 @@ fun SplashScreen(navController: NavController){
     LaunchedEffect(key1 = true){
         //delay(3000)
         navController.popBackStack()
-        navController.navigate(PantallasJugar.JugarScreen.route + "/g" + "/JavaScript" + "/j1")
+        navController.navigate(PantallasApp.LoginScreen.route)
     }
 
     Splash()

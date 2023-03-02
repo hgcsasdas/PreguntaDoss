@@ -65,16 +65,6 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
-        /*
-        EJEMPLO DE COMO PASAR DATOS ENTRE PANTALLAS
-        composable(route= PantallasApp.CrearPartida.route + "/{codigoSala}",
-            arguments = listOf(navArgument(name = "codigoSala"){
-                type = NavType.StringType
-            })){
-            CrearPartida(
-                navController, it.arguments?.getString("codigoSala")
-            )
-        }*/
         composable(route= PantallasApp.CrearPartida.route){
             CrearPartida(
                 navController,
@@ -93,14 +83,22 @@ fun NavegacionApp(ViewModel: ViewModel, LoginViewModel: LoginViewModel) {
                 ViewModel
             )
         }
-        composable(route= PantallasJugar.RuleScreen.route + "/{codigoSala}",
-            arguments = listOf(navArgument(name = "codigoSala"){
-                type = NavType.StringType
-            })){
-            Roulette(
+        composable(route= PantallasJugar.RuleScreen.route + "/{codigoSala}" + "/{jugador}",
+            arguments = listOf(
+                navArgument(name = "codigoSala") {
+                    type = NavType.StringType
+                },
+                navArgument(name = "jugador") {
+                    type = NavType.StringType
+                }
+            )){
+            backStackEntry ->
+            RouletteScreen(
                 navController,
                 ViewModel,
-                it.arguments?.getString("codigoSala")
+                backStackEntry.arguments?.getString("codigoSala"),
+                backStackEntry.arguments?.getString("jugador")
+
             )
         }
         composable(route= PantallasJugar.SalaDeEspera.route+ "/{codigoSala}",

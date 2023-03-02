@@ -18,7 +18,9 @@ import com.example.apalabrados.helpers.BottomBar
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.ui.theme.AzulFondo
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("U" +
+        "nusedMaterialScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter"
+)
 @Composable
 fun AniadirPreguntas(navController: NavController, ViewModel: ViewModel) {
     val scaffoldState = rememberScaffoldState()

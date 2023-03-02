@@ -50,7 +50,7 @@ fun UnirsePartida(navController: NavController, Viewmodel: ViewModel){
                         campo = it,
                     )
                 },
-                label = { Text("Inventa un código de sala") },
+                label = { Text("Introduce el código de sala") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
