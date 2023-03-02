@@ -17,6 +17,7 @@ import com.example.apalabrados.model.Pregunta
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.session.Session
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
 @Composable

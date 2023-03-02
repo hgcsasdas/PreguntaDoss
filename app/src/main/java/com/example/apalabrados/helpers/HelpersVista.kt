@@ -13,16 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.mvvm.ViewModel
-import com.example.apalabrados.ui.theme.AzulClarito
-import com.example.apalabrados.ui.theme.AzulFondo
-import com.example.apalabrados.ui.theme.ColorBotonPerfil
-import com.example.apalabrados.ui.theme.ColorPerfil
+import com.example.apalabrados.ui.theme.*
 
 
 @Composable
@@ -83,12 +81,12 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
             painter = painterResource(id = R.drawable.preguntadoss),
             contentDescription = null,
         )
-        Spacer(modifier = Modifier.padding(15.dp))
+        Spacer(modifier = Modifier.padding(40.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp),
-            backgroundColor = AzulClarito,
+            backgroundColor = CardPerfil,
             elevation = 8.dp
         ) {
             Column(
@@ -97,7 +95,7 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Perfil de: $user",
+                    text = "Bienvenido, $user",
                     style = MaterialTheme.typography.h6,
                     color = AzulFondo
                 )
@@ -120,11 +118,12 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
                 )
             }
         }*/
+        Spacer(modifier = Modifier.padding(7.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp),
-            backgroundColor = AzulClarito,
+            backgroundColor = CardPerfil,
             elevation = 8.dp
         ) {
             Column(
@@ -137,11 +136,12 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
                 )
             }
         }
+        Spacer(modifier = Modifier.padding(7.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp),
-            backgroundColor = AzulClarito,
+            backgroundColor = CardPerfil,
             elevation = 8.dp
         ) {
             Column(
@@ -155,32 +155,36 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
             }
         }
 
-        Card(
+        /*Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp),
             backgroundColor = AzulFondo,
             elevation = 8.dp
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(PantallasApp.LoginScreen.route)
-                },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(55.dp),
+        }*/
+        Spacer(modifier = Modifier.padding(7.dp))
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate(PantallasApp.LoginScreen.route)
+                },  modifier = Modifier
+                    .width(150.dp)
+                    .height(55.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFFFF4303),
+                    contentColor = Color.White,
+                )
 
-                ) {
-                    Text(
-                        text = "LogOut",
-                        color = ColorPerfil
-                    )
-                }
+            ) {
+                Text(
+                    text = "LogOut",
+                    color = ColorBotonPerfil
+                )
             }
         }
     }
