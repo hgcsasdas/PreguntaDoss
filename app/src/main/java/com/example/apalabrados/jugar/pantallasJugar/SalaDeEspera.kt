@@ -27,6 +27,7 @@ fun SalaDeEspera(navController: NavController, ViewModel: ViewModel, codigoSala:
 
         if (sessionManager.isLoggedIn() ){
             codigoSala?.let {
+
                 ContenidoSalaDeEspera( codigoSala, sessionManager, navController, ViewModel)
             }
         }

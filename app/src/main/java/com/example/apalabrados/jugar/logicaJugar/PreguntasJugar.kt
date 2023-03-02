@@ -23,7 +23,7 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun JugarScreenLogica(navController: NavController, ViewModel: ViewModel,codigoSala: String, tema: String, jugador: String) {
     var ListaPreguntas by remember { mutableStateOf<List<Pregunta>>(emptyList()) }
-    println(tema)
+    println(codigoSala)
     LaunchedEffect(tema) {
         val result = buscarPreguntas(tema).await()
         ListaPreguntas = result
@@ -85,11 +85,15 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
 
         Button(onClick = {
             // Mostrar el diálogo con los resultados
+            println(total)
             if (total == 3){
                 jugadorAcerto(codigoSala, jugador)
+                println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 1")
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
             }else {
                 jugadorFallo(codigoSala)
+                println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 2")
+
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
 
             }
