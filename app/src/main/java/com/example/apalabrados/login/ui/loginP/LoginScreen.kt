@@ -157,7 +157,7 @@ fun RegistroButton(navController: NavController) {
             disabledContentColor = Color.White
         ), enabled = true
     ) {
-        Text(text = "Resgistro")
+        Text(text = "Registro")
     }
 }
 

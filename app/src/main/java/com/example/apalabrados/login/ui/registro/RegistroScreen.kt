@@ -142,7 +142,7 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
             disabledContentColor = Color.White
         ), enabled = loginEnable
     ) {
-        Text(text = "Resgistro")
+        Text(text = "Registro")
     }
 }
 
