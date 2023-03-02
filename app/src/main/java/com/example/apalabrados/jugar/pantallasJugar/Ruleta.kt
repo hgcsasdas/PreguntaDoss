@@ -143,10 +143,10 @@ fun RouletteScreen(navController: NavController, ViewModel: ViewModel, codigoSal
 fun getResult(angle: Float): String {
     println(angle%360)
     return when (angle % 360) {
-        in 0f..89f -> "JavaScript"
-        in 90f..179f -> "CSS"
+        in 0f..89f -> "CSS"
+        in 90f..179f -> "Java"
         in 180f..269f -> "HTML"
-        in 270f..359f -> "Java"
+        in 270f..359f -> "JavaScript"
         else -> ""
     }
 }
