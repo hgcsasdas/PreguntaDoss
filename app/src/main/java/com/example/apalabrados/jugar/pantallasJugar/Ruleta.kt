@@ -105,7 +105,7 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
             contentDescription = "",
             modifier = Modifier
                 .size(100.dp)
-                .padding(start = 10.dp)
+                .padding(end = 40.dp)
 
         )
         Image(
