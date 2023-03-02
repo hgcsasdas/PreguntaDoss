@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -23,7 +24,6 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun JugarScreenLogica(navController: NavController, ViewModel: ViewModel,codigoSala: String, tema: String, jugador: String) {
     var ListaPreguntas by remember { mutableStateOf<List<Pregunta>>(emptyList()) }
-    println(tema)
     LaunchedEffect(tema) {
         val result = buscarPreguntas(tema).await()
         ListaPreguntas = result
@@ -41,7 +41,9 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
 
     var total = 0
 
-    Column {
+    Column(
+
+    ) {
         preguntas.forEachIndexed { index, pregunta ->
             // Mostrar la pregunta
             Text(pregunta.pregunta)
