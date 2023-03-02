@@ -1,4 +1,4 @@
-package com.example.apalabrados.pantallas
+ package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
@@ -32,7 +32,7 @@ fun Perfil(navController: NavController, ViewModel: ViewModel) {
         if (sessionManager.isLoggedIn()) {
             val nick = sessionManager.getNick()
             val email = sessionManager.getEmail()
-            ProfileScreen(nick!!, email!!, partidas_ganadas!!)
+            ProfileScreen(nick!!, email!!, partidas_ganadas!!, navController)
             // hacer algo con los datos de la sesión del usuario
         } else {
             // el usuario no ha iniciado sesión, redirigirlo a la pantalla de inicio de sesión
