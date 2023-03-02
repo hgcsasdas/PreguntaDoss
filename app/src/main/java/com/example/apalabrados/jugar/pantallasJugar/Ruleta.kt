@@ -119,7 +119,7 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
     LaunchedEffect(shouldNavigateToNextScreen.value) {
         if (shouldNavigateToNextScreen.value && tema.isNotEmpty()) { // Asegurarse de que tema no sea una cadena vacía
             delay(2000)
-            println(tema)
+            println("El tema es: $tema, y la sala: $codigoSala de la ruleee")
             navController.navigate(PantallasJugar.JugarScreen.route + "/$codigoSala" + "/$tema"+ "/$jugador")
         }
     }
@@ -135,6 +135,7 @@ fun RouletteScreen(navController: NavController, ViewModel: ViewModel, codigoSal
         scaffoldState = scaffoldState,
         bottomBar = { BottomBar(navController, ViewModel) }
     ) {
+        println(codigoSala + " // caca de ruleta ")
         Roulette(navController, ViewModel,codigoSala, jugador)
     }
 }
@@ -150,9 +151,3 @@ fun getResult(angle: Float): String {
         else -> ""
     }
 }
-
-@Composable
-fun showResult(tema: String) {
-    println(tema)
-}
-

@@ -310,12 +310,19 @@ suspend fun buscarJugadorPartida(codigoSala: String, posicion: String): String? 
 }
 
 suspend fun buscarTurnoOSubturno(codigoSala: String, turnoOsubturno: String): Int? {
+    println("Entré función al buscarturno")
+
     val querySnapshot = db.collection("partida")
         .whereEqualTo("codigo", codigoSala)
         .get()
         .await()
 
+
+
     if (querySnapshot.documents.isNotEmpty()) {
+
+        println("NSIFUNCIONA")
+
         val document = querySnapshot.documents[0]
         return document.getLong(turnoOsubturno)?.toInt()
     }
@@ -386,7 +393,10 @@ fun jugadorAcerto(codigoSala: String, jugador: String) {
         val logrosJ1 = documentSnapshot.getLong("logrosJ1") ?: 0
         val logrosJ2 = documentSnapshot.getLong("logrosJ2") ?: 0
 
+
+
         if (jugador == "j1") {
+            println("Entré")
             partidaRef.update("logrosJ1", logrosJ1 + 1)
         } else if (jugador == "j2") {
             partidaRef.update("logrosJ2", logrosJ2 + 1)
