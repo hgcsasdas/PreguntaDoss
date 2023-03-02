@@ -119,7 +119,6 @@ fun Roulette(navController: NavController, ViewModel: ViewModel, codigoSala: Str
     LaunchedEffect(shouldNavigateToNextScreen.value) {
         if (shouldNavigateToNextScreen.value && tema.isNotEmpty()) { // Asegurarse de que tema no sea una cadena vacía
             delay(2000)
-            println("El tema es: $tema, y la sala: $codigoSala de la ruleee")
             navController.navigate(PantallasJugar.JugarScreen.route + "/$codigoSala" + "/$tema"+ "/$jugador")
         }
     }

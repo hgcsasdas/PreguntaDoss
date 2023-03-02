@@ -87,15 +87,16 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
 
         Button(onClick = {
             // Mostrar el diálogo con los resultados
-            println(total)
+            println("el total: $total")
             if (total == 3){
                 jugadorAcerto(codigoSala, jugador)
                 println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 1")
+                total = 0
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
             }else {
                 jugadorFallo(codigoSala)
                 println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 2")
-
+                total = 0
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
 
             }

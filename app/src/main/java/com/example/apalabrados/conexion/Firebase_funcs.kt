@@ -393,12 +393,11 @@ fun jugadorAcerto(codigoSala: String, jugador: String) {
         val logrosJ1 = documentSnapshot.getLong("logrosJ1") ?: 0
         val logrosJ2 = documentSnapshot.getLong("logrosJ2") ?: 0
 
-
-
         if (jugador == "j1") {
-            println("Entré")
+            println("Entré j1")
             partidaRef.update("logrosJ1", logrosJ1 + 1)
         } else if (jugador == "j2") {
+            println("Entré j2")
             partidaRef.update("logrosJ2", logrosJ2 + 1)
         }
     }

@@ -46,9 +46,9 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                 subturno = buscarTurnoOSubturno(codigoSala, "subturno")!!,
             )
 
-            if (consultarGanador(codigoSala, "logrosj1") == 3){
+            if (consultarGanador(codigoSala, "logrosJ1")!! >= 3){
                 navController.navigate(route = PantallasJugar.GanadorScreen.route + "/" + jugador1)
-            } else if(consultarGanador(codigoSala, "logrosj2") == 3){
+            } else if(consultarGanador(codigoSala, "logrosJ2")!! >= 3){
                 navController.navigate(route = PantallasJugar.GanadorScreen.route + "/" + jugador2)
             }
             // Esperamos cinco segundos antes de volver a llamar a la función
