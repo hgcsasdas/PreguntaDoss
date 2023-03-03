@@ -47,7 +47,6 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
         modifier = Modifier
             .fillMaxSize()
             .background(AzulFondo),
-        verticalArrangement = Arrangement.Center,
 
     ) {
         Card(
