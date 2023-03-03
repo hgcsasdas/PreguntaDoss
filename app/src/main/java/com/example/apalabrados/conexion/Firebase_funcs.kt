@@ -244,6 +244,7 @@ suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, nav
             Log.w(TAG, "Error al obtener las partidas", exception)
         }    }
 }
+
 fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
     val usersCollection = db.collection("usuarios")
     val query = usersCollection.whereEqualTo("usuario", nick)

@@ -1,5 +1,6 @@
 package com.example.apalabrados.helpers
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,16 +12,22 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.R
+import com.example.apalabrados.conexion.buscarPartidasGanadasJugador
 import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.mvvm.ViewModel
+import com.example.apalabrados.session.Session
 import com.example.apalabrados.ui.theme.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -67,9 +74,19 @@ fun BottomBar(navController: NavController, ViewModel: ViewModel) {
     }
 }
 //FUNCIÓN VISTA PARA OMSTRAR LOS DATOS DEL PERFIL
-@Composable
-fun ProfileScreen(user: String, email: String, partidasGandas: Int, navController: NavController) {
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 
+@Composable
+fun ProfileScreen(user: String, email: String, navController: NavController, viewModel: ViewModel) {
+    val coroutineScope = rememberCoroutineScope()
+    val sessionManager = Session(LocalContext.current)
+    val partidasGandas by viewModel.partidasGanadas.observeAsState()
+
+
+    coroutineScope.launch {
+        buscarPartidasGanadasJugador(sessionManager.getNick()!!, viewModel)
+        delay(5000L)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,23 +118,7 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
                 )
              }
         }
-      /* Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-            backgroundColor = AzulClarito,
-            elevation = 8.dp
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = "Usuario",
-                    style = MaterialTheme.typography.h5,
-                    color = AzulFondo
-                )
-            }
-        }*/
+
         Spacer(modifier = Modifier.padding(7.dp))
         Card(
             modifier = Modifier
@@ -155,14 +156,6 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
             }
         }
 
-        /*Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-            backgroundColor = AzulFondo,
-            elevation = 8.dp
-        ) {
-        }*/
         Spacer(modifier = Modifier.padding(7.dp))
         Column(
             modifier = Modifier.padding(16.dp),
@@ -189,3 +182,5 @@ fun ProfileScreen(user: String, email: String, partidasGandas: Int, navControlle
         }
     }
 }
+
+
