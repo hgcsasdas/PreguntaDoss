@@ -1,12 +1,11 @@
 package com.example.apalabrados.jugar.logicaJugar
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -18,6 +17,9 @@ import com.example.apalabrados.model.Pregunta
 import com.example.apalabrados.mvvm.ViewModel
 import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.session.Session
+import com.example.apalabrados.ui.theme.AzulFondo
+import com.example.apalabrados.ui.theme.CardPerfil
+import com.example.apalabrados.ui.theme.Marcos1
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
@@ -31,27 +33,54 @@ fun JugarScreenLogica(navController: NavController, ViewModel: ViewModel,codigoS
 
     }
 
-    MostrarPreguntas(ListaPreguntas, navController, codigoSala, jugador)
+    MostrarPreguntas(ListaPreguntas, navController, codigoSala, jugador, tema)
 
 
 }
 
 @Composable
-fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, codigoSala: String, jugador: String) {
+fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, codigoSala: String, jugador: String, tema: String) {
 
     var total = 0
 
     Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AzulFondo),
 
     ) {
+        Card(
+            modifier = Modifier
+                .width(50.dp)
+                .height(35.dp),
+            backgroundColor = Marcos1,
+
+
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally ,
+                verticalArrangement = Arrangement.Center,
+
+
+                ) {
+                Text(text = "$tema")
+            }
+
+        }
+        Spacer(modifier = Modifier.padding(7.dp))
         preguntas.forEachIndexed { index, pregunta ->
             // Mostrar la pregunta
             Text(pregunta.pregunta)
 
             // Crear un grupo de radiobuttons para las respuestas
             var respuestaSeleccionada by remember { mutableStateOf("") }
-            Column {
-                Row() {
+            Column (
+                horizontalAlignment = Alignment.Start ,
+                ){
+                Row(
+                    horizontalArrangement = Arrangement.Start
+
+                ) {
                     RadioButton(
                         selected = respuestaSeleccionada == pregunta.respuesta1,
                         onClick = { respuestaSeleccionada = pregunta.respuesta1 },
@@ -90,13 +119,11 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
             println("el total: $total")
             if (total == 3){
                 jugadorAcerto(codigoSala, jugador)
-                println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 1")
-                total = 0
+                total=0
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
             }else {
                 jugadorFallo(codigoSala)
-                println("el codigo de sala es:  $codigoSala Preguntasssssssssssssssssssssss 2")
-                total = 0
+                total=0
                 navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/$codigoSala")
 
             }

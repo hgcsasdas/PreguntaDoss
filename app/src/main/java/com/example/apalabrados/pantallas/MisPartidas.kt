@@ -2,6 +2,7 @@ package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,8 @@ import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.session.Session
 import com.example.apalabrados.ui.theme.AzulClarito
 import com.example.apalabrados.ui.theme.AzulFondo
+import com.example.apalabrados.ui.theme.ColorNaranja
+import com.example.apalabrados.ui.theme.Marcos1
 
 import kotlinx.coroutines.tasks.await
 
@@ -58,7 +61,7 @@ fun MisPartidas(navController: NavController, viewModel: ViewModel){
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: NavController){
-    val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
+    //val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -68,16 +71,34 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Column(
+            Modifier.fillMaxWidth() ,
+            horizontalAlignment = Alignment.CenterHorizontally ,
+        ) {
+            Card(
+                border =  BorderStroke(1.dp, Color.LightGray),
+                modifier = Modifier
+                    .padding(8.dp),
+
+                elevation = 6.dp,
+                backgroundColor = ColorNaranja
+
+                ) {
+                Text(
+                    text = "Mis partidas",
+                    modifier = Modifier.padding(5.dp)
+                    )
+            }
+            
+        }
         //Llamo a la lazyColumn
         LazyColumn() {
             // de cada dato creo una carta
             itemsIndexed(listaPartidas) { index, item ->
-                println(listaPartidas[index].toString())
                 Card(
+                    border =  BorderStroke(1.dp, Color.LightGray),
                     onClick = {
-
                         navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" + listaPartidas[index]?.codigo)
-
 
                         Toast.makeText(
                             context,
@@ -86,32 +107,35 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
                         ).show()
                     },
                     modifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            AzulClarito,
-                            //
-                            // shape = roundCornerShape
-                        ),
+                        .padding(8.dp),
                     elevation = 6.dp
                 ) {
                     Column(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(1.dp)
                             .fillMaxWidth()
                             .background(AzulClarito)
+
                     ) {
                         Spacer(modifier = Modifier.width(5.dp))
                         //hago un display del nombre
                         listaPartidas[index]?.codigo?.let {
-                            Text(
-                                text = it,
-                                modifier = Modifier.padding(4.dp),
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                style = TextStyle(
-                                    fontSize = 20.sp, fontWeight = FontWeight.Bold
+                            Column(
+                                Modifier.fillMaxWidth() ,
+                                horizontalAlignment = Alignment.CenterHorizontally ,
+
+                                ) {
+                                Text(
+                                    text = "Codigo de sala: $it",
+                                    modifier = Modifier.padding(4.dp),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center,
+                                    style = TextStyle(
+                                        fontSize = 20.sp, fontWeight = FontWeight.Bold
+                                    )
                                 )
-                            )
+
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(5.dp))
