@@ -116,7 +116,7 @@ fun MostrarPreguntas(preguntas: List<Pregunta>, navController: NavController, co
 
         Button(onClick = {
             // Mostrar el diálogo con los resultados
-            println(total)
+            println("el total: $total")
             if (total == 3){
                 jugadorAcerto(codigoSala, jugador)
                 total=0
