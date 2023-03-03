@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.apalabrados.conexion.aniadirGanador
 import com.example.apalabrados.conexion.buscarJugadorPartida
 import com.example.apalabrados.conexion.buscarTurnoOSubturno
 import com.example.apalabrados.conexion.consultarGanador
@@ -46,9 +47,13 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                 subturno = buscarTurnoOSubturno(codigoSala, "subturno")!!,
             )
 
-            if (consultarGanador(codigoSala, "logrosJ1")!! >= 3){
+            println("logoros j1: " + consultarGanador(codigoSala, "logrosJ1"))
+            println("logoros j2: " + consultarGanador(codigoSala, "logrosJ2"))
+
+            if (consultarGanador(codigoSala, "logrosJ1") == 3){
+                aniadirGanador(codigoSala, sessionManager.getNick().toString())
                 navController.navigate(route = PantallasJugar.GanadorScreen.route + "/" + jugador1)
-            } else if(consultarGanador(codigoSala, "logrosJ2")!! >= 3){
+            } else if(consultarGanador(codigoSala, "logrosJ2") == 3){
                 navController.navigate(route = PantallasJugar.GanadorScreen.route + "/" + jugador2)
             }
             // Esperamos cinco segundos antes de volver a llamar a la función

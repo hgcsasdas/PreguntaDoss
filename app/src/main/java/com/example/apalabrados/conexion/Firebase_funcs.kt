@@ -413,3 +413,13 @@ fun jugadorFallo(codigoSala: String){
 
     }
 }
+
+fun aniadirGanador(codigoSala: String, nombre: String){
+    // Obtener la referencia al documento de la partida
+    val partidaRef = db.collection("partida").document(codigoSala)
+
+    // Actualizar el campo correspondiente
+    partidaRef.get().addOnSuccessListener { documentSnapshot ->
+            partidaRef.update("ganador", nombre)
+    }
+}
