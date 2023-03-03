@@ -79,7 +79,6 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
                 border =  BorderStroke(1.dp, Color.LightGray),
                 modifier = Modifier
                     .padding(8.dp),
-
                 elevation = 6.dp,
                 backgroundColor = ColorNaranja
 

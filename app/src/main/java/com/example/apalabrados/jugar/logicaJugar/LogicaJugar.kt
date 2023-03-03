@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,7 +13,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.aniadirGanador
 import com.example.apalabrados.conexion.buscarJugadorPartida
@@ -68,30 +73,98 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
     ) {
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(15.dp)
-                .background(AzulClarito),
+                .background(AzulFondo),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "Sala: $codigoSala")
+            Card(
+                modifier = Modifier
+                    .width(400.dp)
+                    .height(50.dp),
+                backgroundColor = AzulClarito
+            ) {
+                Text(text = "El código de la sala es: $codigoSala",
+                    style = TextStyle(
+                        fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
 
-            Text(text = "Turno: $subturno")
+            Card(
+                modifier = Modifier
+                    .width(400.dp)
+                    .height(50.dp),
+                backgroundColor = AzulClarito
 
-
+            ) {
+                Text(text = "Número de rondas jugadas: $subturno",
+                    style = TextStyle(
+                        fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(15.dp))
+            Card(
+                modifier = Modifier
+                    .width(400.dp)
+                    .height(50.dp),
+                backgroundColor = AzulClarito
 
-            Text(text = "Jugador 1: $jugador1")
-            Text(text = "Jugador 2: $jugador2")
+            ) {
+                Text(text = "El jugador 1 es: $jugador1",
+                    style = TextStyle(
+                        fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
+            Spacer(modifier = Modifier.padding(5.dp))
+
+            Card(
+                modifier = Modifier
+                    .width(400.dp)
+                    .height(50.dp),
+                backgroundColor = AzulClarito
+            ) {
+                Text(text = "El jugador 2 es: $jugador2",
+                    style = TextStyle(
+                        fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(15.dp))
 
             if (subturno != null){
                 if (sessionManager.getNick() == jugador1 && subturno!! % 2 != 0 && jugador2?.isEmpty() == false){
 
-                    Text(text = "Turno jugador 1")
-
+                    Card(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(50.dp),
+                        backgroundColor = AzulClarito
+                    ) {
+                        Text(text = "Es tu turno jugador 1 $jugador1",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 15.dp),
+                            style = TextStyle(
+                                fontSize = 15.sp, fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
+                    
                     Button(onClick = {
                         navController.navigate(route = PantallasJugar.RuleScreen.route + "/$codigoSala/j1")
 
@@ -100,12 +173,25 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                             backgroundColor = AzulClarito,
                             contentColor = AzulFondo
                         ) ) {
-                        Text(text = "Jugar p1")
+                        Text(text = "Jugar $jugador1")
                     }
 
                 } else if (sessionManager.getNick() == jugador2 && subturno!! % 2 == 0 && jugador1?.isEmpty() == false){
 
-                    Text(text = "Turno jugador 2")
+                    Card(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(50.dp),
+                        backgroundColor = AzulClarito
+                    ) {
+                        Text(text = "Es tu turno jugador 2 $jugador2",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 10.dp),
+                            style = TextStyle(
+                                fontSize = 15.sp, fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
 
                     Button(onClick = {
                         navController.navigate(route = PantallasJugar.RuleScreen.route + "/$codigoSala/j2")
@@ -115,7 +201,7 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                             backgroundColor = AzulClarito,
                             contentColor = AzulFondo
                         ) ) {
-                        Text(text = "Jugar p2")
+                        Text(text = "Jugar $jugador2")
                     }
                 }else{
                     Text(text = "Espere a su turno o a que entren todos los jugadores a la sala")
