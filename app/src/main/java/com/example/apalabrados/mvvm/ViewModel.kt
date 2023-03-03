@@ -113,8 +113,17 @@ open class ViewModel : ViewModel() {
         _jugador1.value = jugador1
         _jugador2.value = jugador2
         _subturno.value = subturno
-
-
     }
+
+    /*  PEFIL PARTIDAS  */
+    private val _partidasGanadas = MutableLiveData<Int>()
+    val partidasGanadas: LiveData<Int> = _partidasGanadas
+
+    fun rellenarPartidasGanadas(
+        partidasGanadas: Int,
+    ){
+        _partidasGanadas.value = partidasGanadas
+    }
+
 
 }

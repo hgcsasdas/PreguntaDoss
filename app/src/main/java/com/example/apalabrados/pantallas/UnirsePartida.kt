@@ -1,6 +1,7 @@
 package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 fun UnirsePartida(navController: NavController, Viewmodel: ViewModel){
     val sessionManager = Session(LocalContext.current)
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     Scaffold (
         scaffoldState = scaffoldState,
@@ -58,9 +60,19 @@ fun UnirsePartida(navController: NavController, Viewmodel: ViewModel){
 
             
             Button(onClick = {
-                coroutineScope.launch {
-                    buscarPartidaPorCodigoUnirse(sessionManager.getNick().toString(), Viewmodel, navController, codigoSalaUnirse)
-                }
+
+                    coroutineScope.launch {
+                        val existe = buscarPartidaPorCodigo(codigoSalaUnirse)
+                        if (existe){
+                            buscarPartidaPorCodigoUnirse(sessionManager.getNick().toString(), Viewmodel, navController, codigoSalaUnirse)
+                        }else{
+                            Toast
+                                .makeText(context, "Codigo de sala ya existe, inserte otro, por favor", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+
+
             }) {
                 Text(text = "BuscarPartida")
             }
