@@ -4,6 +4,7 @@ package com.example.apalabrados.conexion
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -11,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apalabrados.model.Partida
@@ -32,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun aniadirPreguntaButton(ViewModel: ViewModel){
+fun aniadirPreguntaButton(ViewModel: ViewModel) {
     val context = LocalContext.current
 
     val campo by ViewModel.campo.observeAsState(initial = "")
@@ -44,71 +47,75 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
     val respuesta2 by ViewModel.respuesta2.observeAsState(initial = "")
     val respuesta3 by ViewModel.respuesta3.observeAsState(initial = "")
 
-    Button(onClick = {
-        if (campo.isEmpty()) {
-            Toast
-                .makeText(context, "campo en blanco", Toast.LENGTH_LONG)
-                .show()
-        }else if (pregunta.isEmpty()) {
-            Toast
-                .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
-                .show()
-        }  else if (respuesta1.isEmpty()) {
-            Toast
-                .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
-                .show()
-        } else if (respuesta2.isEmpty()) {
-            Toast
-                .makeText(context, "respuesta2 en blanco", Toast.LENGTH_LONG)
-                .show()
-        }  else if (respuesta3.isEmpty()) {
-            Toast
-                .makeText(context, "respuesta3 en blanco", Toast.LENGTH_LONG)
-                .show()
-        } else if (respuesta.isEmpty()) {
-            Toast
-                .makeText(context, "Respuesta correcta en blanco", Toast.LENGTH_LONG)
-                .show()
-        }else {
-            var correcta = ""
-            if (respuesta == "respuesta1"){
-                correcta = respuesta1
-            } else if(respuesta == "respuesta2"){
-                correcta = respuesta2
-            } else if(respuesta == "respuesta3"){
-                correcta = respuesta3
-            }
+    Button(
+        onClick = {
+            if (campo.isEmpty()) {
+                Toast
+                    .makeText(context, "campo en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else if (pregunta.isEmpty()) {
+                Toast
+                    .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else if (respuesta1.isEmpty()) {
+                Toast
+                    .makeText(context, "respuesta1 en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else if (respuesta2.isEmpty()) {
+                Toast
+                    .makeText(context, "respuesta2 en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else if (respuesta3.isEmpty()) {
+                Toast
+                    .makeText(context, "respuesta3 en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else if (respuesta.isEmpty()) {
+                Toast
+                    .makeText(context, "Respuesta correcta en blanco", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                var correcta = ""
+                if (respuesta == "respuesta1") {
+                    correcta = respuesta1
+                } else if (respuesta == "respuesta2") {
+                    correcta = respuesta2
+                } else if (respuesta == "respuesta3") {
+                    correcta = respuesta3
+                }
 
-            db
-                .collection(campo)
-                .document()
-                .set(mapOf(
-                    "pregunta" to pregunta,
-                    "respuesta1" to respuesta1,
-                    "respuesta2" to respuesta2,
-                    "respuesta3" to respuesta3,
-                    "correcta" to  correcta
-                ))
-                .addOnSuccessListener {
-                    ViewModel.limpiarCampos()
-                    Toast
-                        .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
-                        .show()
-                }
-                .addOnFailureListener {
-                    Toast
-                        .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
-                        .show()
-                }
-        }
-        println(ViewModel.respuesta.value)
-        println(ViewModel.campo.value)
-        println("alijdlisajdliajds")
-    },
+                db
+                    .collection(campo)
+                    .document()
+                    .set(
+                        mapOf(
+                            "pregunta" to pregunta,
+                            "respuesta1" to respuesta1,
+                            "respuesta2" to respuesta2,
+                            "respuesta3" to respuesta3,
+                            "correcta" to correcta
+                        )
+                    )
+                    .addOnSuccessListener {
+                        ViewModel.limpiarCampos()
+                        Toast
+                            .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    .addOnFailureListener {
+                        Toast
+                            .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
+                            .show()
+                    }
+            }
+            println(ViewModel.respuesta.value)
+            println(ViewModel.campo.value)
+            println("alijdlisajdliajds")
+        },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = AzulClarito,
             contentColor = AzulFondo
-        )        ) {
+        )
+    ) {
         Text(
             text = "Añadir Pregunta",
             fontSize = 26.sp,
@@ -121,55 +128,59 @@ fun aniadirPreguntaButton(ViewModel: ViewModel){
 
 //Con esta función se crea una partida
 @Composable
-fun aniadirPartida(jugador1: String, ViewModel: ViewModel, navController: NavController){
+fun aniadirPartida(jugador1: String, ViewModel: ViewModel, navController: NavController) {
     val context = LocalContext.current
 
-    Button(onClick = {
-        val partidaData = hashMapOf(
-            "partida" to 1,
-            "turno" to 1,
-            "subturno" to 1,
-            "logrosj1" to 0,
-            "logrosj2" to 0,
-            "j1" to jugador1,
-            "j2" to "",
-            "ganador" to "",
-            "codigo" to ViewModel.codigoSala.value
-        )
+    Button(
+        border = BorderStroke(1.dp, Color.LightGray),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray),
+        onClick = {
+            val partidaData = hashMapOf(
+                "partida" to 1,
+                "turno" to 1,
+                "subturno" to 1,
+                "logrosj1" to 0,
+                "logrosj2" to 0,
+                "j1" to jugador1,
+                "j2" to "",
+                "ganador" to "",
+                "codigo" to ViewModel.codigoSala.value
+            )
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val partidaEncontrada = ViewModel.codigoSala.value?.let { buscarPartidaPorCodigo(it) }
-            if (partidaEncontrada == true) {
-                Toast
-                    .makeText(context, "Codigo de sala ya existe, inserte otro, por favor", Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                ViewModel.codigoSala.value?.let {
-                    db
-                        .collection("partida")
-                        .document(it)
-                        .set(partidaData)
-                        .addOnSuccessListener {
-                            ViewModel.limpiarCampos()
-                            Toast
-                                .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
-                                .show()
-                                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSala.value)
-                            ViewModel.limpiarCodigoSala()
-                        }
-                        .addOnFailureListener {
-                            Toast
-                                .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
-                                .show()
-                        }
+            GlobalScope.launch(Dispatchers.Main) {
+                val partidaEncontrada =
+                    ViewModel.codigoSala.value?.let { buscarPartidaPorCodigo(it) }
+                if (partidaEncontrada == true) {
+                    Toast
+                        .makeText(
+                            context,
+                            "Codigo de sala ya existe, inserte otro, por favor",
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                } else {
+                    ViewModel.codigoSala.value?.let {
+                        db
+                            .collection("partida")
+                            .document(it)
+                            .set(partidaData)
+                            .addOnSuccessListener {
+                                ViewModel.limpiarCampos()
+                                Toast
+                                    .makeText(context, "Añadido correctamente", Toast.LENGTH_LONG)
+                                    .show()
+                                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" + ViewModel.codigoSala.value)
+                                ViewModel.limpiarCodigoSala()
+                            }
+                            .addOnFailureListener {
+                                Toast
+                                    .makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                    }
+                }
             }
-        }
-    }
-    },
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = AzulClarito,
-            contentColor = AzulFondo
-        )) {
+        }) {
         Text(text = "Crear partida")
     }
 
@@ -223,13 +234,18 @@ fun buscarJugadorLibre(nombre: String) {
     }
 }*/
 
-suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, navController: NavController, codigoSala: String){
+suspend fun buscarPartidaPorCodigoUnirse(
+    user: String,
+    ViewModel: ViewModel,
+    navController: NavController,
+    codigoSala: String,
+) {
     val coleccion = db.collection("partida")
     val query = coleccion.whereEqualTo("codigo", codigoSala)
 
     val userj2 = buscarJugadorPartida(codigoSala, "j2")
 
-    if (userj2!!.isEmpty()){
+    if (userj2!!.isEmpty()) {
 
         query.get().addOnSuccessListener { documents ->
             for (document in documents) {
@@ -237,12 +253,13 @@ suspend fun buscarPartidaPorCodigoUnirse(user: String, ViewModel: ViewModel, nav
                 val partida = document.toObject(Partida::class.java)
                 partida.j2 = user
                 coleccion.document(partidaId).set(partida)
-                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" +ViewModel.codigoSalaUnirse.value)
+                navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" + ViewModel.codigoSalaUnirse.value)
                 ViewModel.limpiarCodigoSalaUnirse()
             }
         }.addOnFailureListener { exception ->
             Log.w(TAG, "Error al obtener las partidas", exception)
-        }    }
+        }
+    }
 }
 
 fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
@@ -259,6 +276,7 @@ fun buscarUsuarioReference(nick: String, onComplete: (Boolean) -> Unit) {
         onComplete(false) // Error al obtener el documento
     }
 }
+
 fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean) -> Unit) {
     // Consulta en la base de datos si existe un usuario con el nombre y la contraseña proporcionados
     db.collection("usuarios")
@@ -279,6 +297,7 @@ fun verSiExisteUsuario(usuario: String, contrasenia: String, callback: (Boolean)
             }
         }
 }
+
 fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
     val coleccion = db.collection("usuarios")
     val consulta = coleccion.whereEqualTo("usuario", user)
@@ -296,6 +315,7 @@ fun cogerEmailSessionUsuario(user: String, onComplete: (String?) -> Unit) {
         onComplete(null)
     }
 }
+
 suspend fun buscarJugadorPartida(codigoSala: String, posicion: String): String? {
     val querySnapshot = db.collection("partida")
         .whereEqualTo("codigo", codigoSala)
@@ -357,7 +377,7 @@ fun buscarPartidasUsuario(sessionManager: Session): Task<MutableList<Partida>> {
             for (querySnapshot in querySnapshots) {
                 for (document in querySnapshot) {
                     val c: Partida? = document.toObject(Partida::class.java)
-                    if (c?.ganador == ""){
+                    if (c?.ganador == "") {
                         c?.let { partidas.add(it) }
                     }
                 }
@@ -368,6 +388,7 @@ fun buscarPartidasUsuario(sessionManager: Session): Task<MutableList<Partida>> {
 
     return task
 }
+
 fun buscarPreguntas(tema: String): Task<MutableList<Pregunta>> {
     val preguntas = mutableListOf<Pregunta>()
     val query = db.collection(tema)
@@ -404,7 +425,7 @@ fun jugadorAcerto(codigoSala: String, jugador: String) {
     }
 }
 
-fun jugadorFallo(codigoSala: String){
+fun jugadorFallo(codigoSala: String) {
     val partidaRef = db.collection("partida").document(codigoSala)
 
     // Actualizar el campo correspondiente
@@ -415,12 +436,12 @@ fun jugadorFallo(codigoSala: String){
     }
 }
 
-fun aniadirGanador(codigoSala: String, nombre: String){
+fun aniadirGanador(codigoSala: String, nombre: String) {
     // Obtener la referencia al documento de la partida
     val partidaRef = db.collection("partida").document(codigoSala)
 
     // Actualizar el campo correspondiente
     partidaRef.get().addOnSuccessListener { documentSnapshot ->
-            partidaRef.update("ganador", nombre)
+        partidaRef.update("ganador", nombre)
     }
 }

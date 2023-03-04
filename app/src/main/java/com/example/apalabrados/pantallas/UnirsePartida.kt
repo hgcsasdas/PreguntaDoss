@@ -2,6 +2,7 @@ package com.example.apalabrados.pantallas
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apalabrados.conexion.*
 import com.example.apalabrados.helpers.BottomBar
@@ -71,9 +74,10 @@ fun UnirsePartida(navController: NavController, Viewmodel: ViewModel){
                                 .show()
                         }
                     }
-
-
-            }) {
+            },
+                border = BorderStroke(1.dp, Color.LightGray),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray),
+            ) {
                 Text(text = "BuscarPartida")
             }
             

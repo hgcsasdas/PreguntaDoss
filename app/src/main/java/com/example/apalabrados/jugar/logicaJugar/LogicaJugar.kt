@@ -1,6 +1,7 @@
 package com.example.apalabrados.jugar.logicaJugar
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -13,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -169,10 +171,9 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                         navController.navigate(route = PantallasJugar.RuleScreen.route + "/$codigoSala/j1")
 
                     },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = AzulClarito,
-                            contentColor = AzulFondo
-                        ) ) {
+                        border = BorderStroke(1.dp, Color.LightGray),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                    ) {
                         Text(text = "Jugar $jugador1")
                     }
 
@@ -197,10 +198,9 @@ fun ContenidoSalaDeEspera(codigoSala: String, sessionManager: Session, navContro
                         navController.navigate(route = PantallasJugar.RuleScreen.route + "/$codigoSala/j2")
 
                     },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = AzulClarito,
-                            contentColor = AzulFondo
-                        ) ) {
+                        border = BorderStroke(1.dp, Color.LightGray),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                    ) {
                         Text(text = "Jugar $jugador2")
                     }
                 }else{

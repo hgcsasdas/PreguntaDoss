@@ -36,7 +36,7 @@ import kotlinx.coroutines.tasks.await
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
-fun MisPartidas(navController: NavController, viewModel: ViewModel){
+fun MisPartidas(navController: NavController, viewModel: ViewModel) {
 
     val scaffoldState = rememberScaffoldState()
 
@@ -60,42 +60,42 @@ fun MisPartidas(navController: NavController, viewModel: ViewModel){
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: NavController){
+fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: NavController) {
     //val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .fillMaxHeight()
             .fillMaxWidth()
+            .fillMaxHeight(0.93f)
             .background(AzulFondo),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            Modifier.fillMaxWidth() ,
-            horizontalAlignment = Alignment.CenterHorizontally ,
+            Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Card(
-                border =  BorderStroke(1.dp, Color.LightGray),
+                border = BorderStroke(1.dp, Color.LightGray),
                 modifier = Modifier
                     .padding(8.dp),
                 elevation = 6.dp,
                 backgroundColor = ColorNaranja
 
-                ) {
+            ) {
                 Text(
                     text = "Mis partidas",
                     modifier = Modifier.padding(5.dp)
-                    )
+                )
             }
-            
+
         }
         //Llamo a la lazyColumn
         LazyColumn() {
             // de cada dato creo una carta
             itemsIndexed(listaPartidas) { index, item ->
                 Card(
-                    border =  BorderStroke(1.dp, Color.LightGray),
+                    border = BorderStroke(1.dp, Color.LightGray),
                     onClick = {
                         navController.navigate(route = PantallasJugar.SalaDeEspera.route + "/" + listaPartidas[index]?.codigo)
 
@@ -120,8 +120,8 @@ fun MostrarPartidas(listaPartidas: SnapshotStateList<Partida?>, navController: N
                         //hago un display del nombre
                         listaPartidas[index]?.codigo?.let {
                             Column(
-                                Modifier.fillMaxWidth() ,
-                                horizontalAlignment = Alignment.CenterHorizontally ,
+                                Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
 
                                 ) {
                                 Text(
