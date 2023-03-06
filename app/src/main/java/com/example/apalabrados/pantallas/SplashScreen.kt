@@ -14,11 +14,12 @@ import com.example.apalabrados.navegacion.PantallasApp
 import com.example.apalabrados.R
 import com.example.apalabrados.navegacion.PantallasJugar
 import com.example.apalabrados.ui.theme.AzulFondo
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController){
     LaunchedEffect(key1 = true){
-        //delay(3000)
+        delay(3000)
         navController.popBackStack()
         navController.navigate(PantallasApp.LoginScreen.route)
     }

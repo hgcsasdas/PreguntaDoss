@@ -59,7 +59,7 @@ fun InicioContent(navController: NavController){
             Spacer(modifier = Modifier.padding(20.dp))
 
             //JUGAR MINIJUEGOS
-            Button(onClick = {
+           /* Button(onClick = {
                 navController.navigate(PantallasApp.SeleccionMiniJuego.route)
             },
                 colors = ButtonDefaults.buttonColors(
@@ -72,7 +72,7 @@ fun InicioContent(navController: NavController){
                 Text(text = "Mini Juegos")
             }
 
-            Spacer(modifier = Modifier.padding(20.dp))
+            Spacer(modifier = Modifier.padding(20.dp))*/
 
             //JUGAR BUTTON
 
