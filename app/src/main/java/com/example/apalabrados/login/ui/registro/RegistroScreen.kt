@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -47,42 +48,46 @@ fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
 @Composable
 fun Registro(modifier: Modifier, viewModel: RegistroViewModel, navController: NavController) {
 
-    val email : String by viewModel.email.observeAsState(initial = "")
-    val password : String by viewModel.password.observeAsState(initial = "")
-    val usuario : String by viewModel.usuario.observeAsState(initial = "")
-    val resgistroEnable:Boolean by viewModel.registroEnable.observeAsState(initial = false)
+    val email: String by viewModel.email.observeAsState(initial = "")
+    val password: String by viewModel.password.observeAsState(initial = "")
+    val usuario: String by viewModel.usuario.observeAsState(initial = "")
+    val resgistroEnable: Boolean by viewModel.registroEnable.observeAsState(initial = false)
     val isLoadingP: Boolean by viewModel.isLoadingR.observeAsState(initial = false)
 
-    if(isLoadingP){
-        Box(modifier.fillMaxSize()){
+    if (isLoadingP) {
+        Box(modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
-    }else{
+    } else {
         Column(modifier = modifier) {
             HeaderImageR(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(16.dp))
-            UsuarioFielR(usuario) {viewModel.onRegistroChanged(it, email, password)}
+            UsuarioFielR(usuario) { viewModel.onRegistroChanged(it, email, password) }
             Spacer(modifier = Modifier.padding(4.dp))
-            EmailFielR(email) {viewModel.onRegistroChanged(usuario, it, password)}
+            EmailFielR(email) { viewModel.onRegistroChanged(usuario, it, password) }
             Spacer(modifier = Modifier.padding(4.dp))
-            PasswordFielR(password) {viewModel.onRegistroChanged(usuario,email, it)}
+            PasswordFielR(password) { viewModel.onRegistroChanged(usuario, email, it) }
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPasswordR(Modifier.align(Alignment.End))
             Spacer(modifier = Modifier.padding(16.dp))
-            Row (
+            Row(
                 modifier = Modifier.size(380.dp, 100.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            ){
+            ) {
                 RegistroButtonR(resgistroEnable, viewModel, navController)
-                }
             }
-
         }
+
     }
+}
 
 @Composable
-fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navController: NavController) {
+fun RegistroButtonR(
+    loginEnable: Boolean,
+    viewModel: RegistroViewModel,
+    navController: NavController
+) {
     val dbName = "usuarios"
     val context = LocalContext.current
 
@@ -95,11 +100,19 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                 "email" to viewModel.email.value,
                 "password" to viewModel.password.value
             )
-            sessionManager.startSession(viewModel.usuario.value!!, viewModel.password.value!!, viewModel.email.value!!)
+            sessionManager.startSession(
+                viewModel.usuario.value!!,
+                viewModel.password.value!!,
+                viewModel.email.value!!
+            )
             buscarUsuarioReference(viewModel.usuario.value!!) { exists ->
                 if (exists) {
                     // El usuario ya existe en la base de datos
-                    Toast.makeText(context, "No se ha podido reistrar el usuario, por que ya existe", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        "No se ha podido reistrar el usuario, por que ya existe",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
 
                 } else {
@@ -117,7 +130,8 @@ fun RegistroButtonR(loginEnable: Boolean, viewModel: RegistroViewModel, navContr
                                     .show()
                                 viewModel.limpiarCampos()
                                 sessionManager.loguear()
-                                navController.navigate(PantallasApp.Inicio.route)
+
+                                navController.navigate(PantallasApp.LoginScreen.route)
                             }
                             .addOnFailureListener {
                                 Toast.makeText(
@@ -161,7 +175,8 @@ fun ForgotPasswordR(modifier: Modifier) {
 @Composable
 fun PasswordFielR(password: String, onTextFielChanged: (String) -> Unit) {
     TextField(
-        value = password, onValueChange = {onTextFielChanged(it)},
+        visualTransformation = PasswordVisualTransformation(),
+        value = password, onValueChange = { onTextFielChanged(it) },
         placeholder = { Text(text = "Contraseña") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -177,9 +192,9 @@ fun PasswordFielR(password: String, onTextFielChanged: (String) -> Unit) {
 }
 
 @Composable
-fun EmailFielR( email: String, onTextFielChanged:(String) -> Unit ) {
+fun EmailFielR(email: String, onTextFielChanged: (String) -> Unit) {
     TextField(
-        value = email, onValueChange = {onTextFielChanged(it)},
+        value = email, onValueChange = { onTextFielChanged(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -193,10 +208,11 @@ fun EmailFielR( email: String, onTextFielChanged:(String) -> Unit ) {
         )
     )
 }
+
 @Composable
-fun UsuarioFielR( usuario: String, onTextFielChanged:(String) -> Unit ) {
+fun UsuarioFielR(usuario: String, onTextFielChanged: (String) -> Unit) {
     TextField(
-        value = usuario, onValueChange = {onTextFielChanged(it)},
+        value = usuario, onValueChange = { onTextFielChanged(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Usuario") },
         singleLine = true,
